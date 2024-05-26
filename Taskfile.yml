@@ -1,0 +1,13 @@
+---
+version: '3'
+
+tasks:
+  generate:
+    cmds:
+      - npx tree-sitter generate
+    silent: true
+  test:
+    deps: [generate]
+    cmds:
+      - npx tree-sitter test
+    silent: true
