@@ -13,13 +13,11 @@ module.exports = grammar({
           optional(repeat1(choice($.name, $.id, $.class))),
           optional($.attributes),
           optional(alias("/", $.self_close_slash)),
+          optional(choice($.plain_text, $.buffered_code)),
           // choice(
-          //   seq(
-          //     optional(seq($._newline, $._indent)),
-          //     optional(" "),
-          //     $.buffered_code,
-          //   ),
-          //   seq($._newline, optional($.children)),
+          //   $.text,
+          //   // seq(optional(seq($._newline, $._indent)), $.buffered_code),
+          //   // seq($._newline, optional($.children)),
           // ),
         ),
       ),
@@ -27,7 +25,7 @@ module.exports = grammar({
       prec.right(
         seq($._indent, repeat1($._children_choice), optional($._dedent)),
       ),
-    _children_choice: ($) => prec(1, choice($.tag, $.text, $._newline)),
+    _children_choice: ($) => prec(1, choice($.tag, $._newline)),
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
     attributes: ($) => choice($.html_attributes, $.ruby_attributes),
@@ -46,7 +44,8 @@ module.exports = grammar({
         seq("'", optional(alias(/([-:\w/.]+)/, $.attribute_value)), "'"),
         seq('"', optional(alias(/([-:\w/.]+)/, $.attribute_value)), '"'),
       ),
-    text: () => /[^\n]+/,
-    buffered_code: ($) => prec.right(seq("=", $.text, optional($._newline))),
+    _text: () => /[^\n]+/,
+    plain_text: ($) => prec.right(seq(" ", $._text, optional($._newline))),
+    buffered_code: ($) => prec.right(seq("=", $._text, optional($._newline))),
   },
 });

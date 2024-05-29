@@ -38,6 +38,11 @@
     }
   },
   {
+    "type": "buffered_code",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "html_attributes",
     "named": true,
     "fields": {},
@@ -51,6 +56,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "plain_text",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "quoted_attribute_value",
@@ -95,6 +105,10 @@
           "named": true
         },
         {
+          "type": "buffered_code",
+          "named": true
+        },
+        {
           "type": "class",
           "named": true
         },
@@ -104,6 +118,10 @@
         },
         {
           "type": "name",
+          "named": true
+        },
+        {
+          "type": "plain_text",
           "named": true
         },
         {
@@ -163,10 +181,6 @@
   },
   {
     "type": "self_close_slash",
-    "named": true
-  },
-  {
-    "type": "text",
     "named": true
   }
 ]

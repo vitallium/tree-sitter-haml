@@ -1,4 +1,4 @@
-// Taken from https://github.com/zealot128/tree-sitter-pug/blob/master/src/scanner.c
+// Adapted from https://github.com/zealot128/tree-sitter-pug/blob/master/src/scanner.c
 
 #include <_types/_uint16_t.h>
 #include <assert.h>
