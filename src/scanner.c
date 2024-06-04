@@ -8,9 +8,9 @@
 #include "tree_sitter/array.h"
 
 enum TokenType {
+    NEWLINE,
     INDENT,
     DEDENT,
-    NEWLINE,
 
     RUBY_ATTRIBUTES,
 };
@@ -109,6 +109,7 @@ void *tree_sitter_haml_external_scanner_create() {
 bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
                                            const bool *valid_symbols) {
     Scanner *scanner = (Scanner *)payload;
+
     if (lexer->lookahead == '\n') {
         if (valid_symbols[NEWLINE]) {
             skip(lexer);
@@ -119,35 +120,38 @@ bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
     }
 
     // HTML attributes but in Ruby
-    if (valid_symbols[RUBY_ATTRIBUTES]) {
-        while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
-            lexer->advance(lexer, true);
-        }
-
-        if (lexer->lookahead != '{') return false;
-        lexer->advance(lexer, false);
-
-        uint16_t brace_depth = 1;
-        while (brace_depth > 0) {
-            switch (lexer->lookahead) {
-            case '}':
-                lexer->advance(lexer, false);
-                brace_depth--;
-                break;
-            case '{':
-                lexer->advance(lexer, false);
-                brace_depth++;
-                break;
-            case '\n':
-                return false;
-            default:
+    if (lexer->lookahead == '{') {
+        if (valid_symbols[RUBY_ATTRIBUTES]) {
+            while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
                 lexer->advance(lexer, true);
-                break;
             }
-        }
 
-        lexer->result_symbol = RUBY_ATTRIBUTES;
-        return true;
+            if (lexer->lookahead != '{') return false;
+            lexer->advance(lexer, false);
+
+            uint16_t brace_depth = 1;
+            while (brace_depth > 0) {
+                switch (lexer->lookahead) {
+                case '}':
+                    lexer->advance(lexer, false);
+                    brace_depth--;
+                    break;
+                case '{':
+                    lexer->advance(lexer, false);
+                    brace_depth++;
+                    break;
+                case '\n':
+                    return false;
+                default:
+                    lexer->advance(lexer, true);
+                    break;
+                }
+            }
+
+            lexer->result_symbol = RUBY_ATTRIBUTES;
+            return true;
+        }
+        return false;
     }
 
     if (lexer->lookahead && lexer->get_column(lexer) == 0) {

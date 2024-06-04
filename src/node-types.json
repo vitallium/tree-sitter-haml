@@ -38,7 +38,7 @@
     }
   },
   {
-    "type": "buffered_code",
+    "type": "evaluated_code",
     "named": true,
     "fields": {}
   },
@@ -78,6 +78,11 @@
     }
   },
   {
+    "type": "running_code",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "source_file",
     "named": true,
     "fields": {},
@@ -85,6 +90,14 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "evaluated_code",
+          "named": true
+        },
+        {
+          "type": "running_code",
+          "named": true
+        },
         {
           "type": "tag",
           "named": true
@@ -105,11 +118,11 @@
           "named": true
         },
         {
-          "type": "buffered_code",
+          "type": "class",
           "named": true
         },
         {
-          "type": "class",
+          "type": "evaluated_code",
           "named": true
         },
         {
@@ -125,7 +138,15 @@
           "named": true
         },
         {
+          "type": "running_code",
+          "named": true
+        },
+        {
           "type": "self_close_slash",
+          "named": true
+        },
+        {
+          "type": "tag",
           "named": true
         }
       ]
@@ -149,6 +170,10 @@
   },
   {
     "type": ")",
+    "named": false
+  },
+  {
+    "type": "-",
     "named": false
   },
   {

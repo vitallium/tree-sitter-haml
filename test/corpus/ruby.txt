@@ -23,7 +23,7 @@ Tag with the buffered code
 (source_file
   (tag
     (name)
-    (buffered_code)))
+    (evaluated_code)))
 
 ================================================================================
 Tag with the buffered code that has spaces inside
@@ -36,7 +36,7 @@ Tag with the buffered code that has spaces inside
 (source_file
   (tag
     (name)
-    (buffered_code)))
+    (evaluated_code)))
 
 ================================================================================
 Tag with the child Ruby hashes
@@ -65,3 +65,38 @@ Tag with the child Ruby hashes v2
     (name)
     (attributes
       (ruby_attributes))))
+
+================================================================================
+Only evaluated Ruby code
+================================================================================
+
+= "simple text"
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (evaluated_code))
+
+================================================================================
+Only running Ruby code
+================================================================================
+
+- @variable = 'test'
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (running_code))
+
+================================================================================
+Both runninga and evaluated Ruby code
+================================================================================
+
+- @variable = 'test'
+= @variable
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (running_code)
+  (evaluated_code))

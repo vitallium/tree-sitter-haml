@@ -5,27 +5,25 @@ module.exports = grammar({
   name: "haml",
   externals: ($) => [$._newline, $._indent, $._dedent, $.ruby_attributes],
   rules: {
-    source_file: ($) => repeat(choice($.tag)),
+    source_file: ($) => repeat(choice($.tag, $.evaluated_code, $.running_code)),
     tag: ($) =>
-      prec.right(
-        seq(
-          choice($.name, $.id, $.class),
-          optional(repeat1(choice($.name, $.id, $.class))),
-          optional($.attributes),
-          optional(alias("/", $.self_close_slash)),
-          optional(choice($.plain_text, $.buffered_code)),
-          // choice(
-          //   $.text,
-          //   // seq(optional(seq($._newline, $._indent)), $.buffered_code),
-          //   // seq($._newline, optional($.children)),
-          // ),
+      seq(
+        choice($.name, $.id, $.class),
+        optional(repeat1(choice($.name, $.id, $.class))),
+        optional($.attributes),
+        optional(alias("/", $.self_close_slash)),
+        choice(
+          $.plain_text,
+          $.evaluated_code,
+          seq($._newline, optional($._children)),
         ),
       ),
-    children: ($) =>
+    _children: ($) =>
       prec.right(
         seq($._indent, repeat1($._children_choice), optional($._dedent)),
       ),
-    _children_choice: ($) => prec(1, choice($.tag, $._newline)),
+    _children_choice: ($) =>
+      prec(1, choice($.tag, $.evaluated_code, $.running_code, $._newline)),
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
     attributes: ($) => choice($.html_attributes, $.ruby_attributes),
@@ -44,8 +42,9 @@ module.exports = grammar({
         seq("'", optional(alias(/([-:\w/.]+)/, $.attribute_value)), "'"),
         seq('"', optional(alias(/([-:\w/.]+)/, $.attribute_value)), '"'),
       ),
-    _text: () => /[^\n]+/,
-    plain_text: ($) => prec.right(seq(" ", $._text, optional($._newline))),
-    buffered_code: ($) => prec.right(seq("=", $._text, optional($._newline))),
+    _text: () => /(.)+?/,
+    plain_text: ($) => seq(" ", $._text),
+    evaluated_code: ($) => seq("=", $._text),
+    running_code: ($) => seq("-", $._text),
   },
 });
