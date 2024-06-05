@@ -5,7 +5,15 @@ module.exports = grammar({
   name: "haml",
   externals: ($) => [$._newline, $._indent, $._dedent, $.ruby_attributes],
   rules: {
-    source_file: ($) => repeat(choice($.tag, $.evaluated_code, $.running_code)),
+    source_file: ($) =>
+      repeat(
+        choice(
+          $.tag,
+          $.ruby_block_output,
+          $.ruby_block_run,
+          $.ruby_interpolation,
+        ),
+      ),
     tag: ($) =>
       seq(
         choice($.name, $.id, $.class),
@@ -14,7 +22,9 @@ module.exports = grammar({
         optional(alias("/", $.self_close_slash)),
         choice(
           $.plain_text,
-          $.evaluated_code,
+          $.ruby_block_output,
+          $.ruby_block_run,
+          $.ruby_interpolation,
           seq($._newline, optional($._children)),
         ),
       ),
@@ -23,7 +33,16 @@ module.exports = grammar({
         seq($._indent, repeat1($._children_choice), optional($._dedent)),
       ),
     _children_choice: ($) =>
-      prec(1, choice($.tag, $.evaluated_code, $.running_code, $._newline)),
+      prec(
+        1,
+        choice(
+          $.ruby_block_output,
+          $.ruby_block_run,
+          $.ruby_interpolation,
+          $.tag,
+          $._newline,
+        ),
+      ),
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
     attributes: ($) => choice($.html_attributes, $.ruby_attributes),
@@ -44,7 +63,9 @@ module.exports = grammar({
       ),
     _text: () => /(.)+?/,
     plain_text: ($) => seq(" ", $._text),
-    evaluated_code: ($) => seq("=", $._text),
-    running_code: ($) => seq("-", $._text),
+    ruby_block_output: ($) => seq("=", $._text),
+    ruby_block_run: ($) => seq("-", $._text),
+    // FIXME: Ruby interpolation should not be mapped to Ruby attributes
+    ruby_interpolation: ($) => seq("#", $.ruby_attributes),
   },
 });

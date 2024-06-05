@@ -1,0 +1,29 @@
+================================================================================
+app/views/events/_event.html.haml
+================================================================================
+- if event.visible_to_user?(current_user)
+  .event-item.gl-border-bottom-0.gl-pb-3{ class: current_path?('users#activity') ? 'user-profile-activity gl-pl-7!' : 'project-activity-item' }
+    .event-item-timestamp.gl-font-sm
+      #{time_ago_with_tooltip(event.created_at)}
+      - if event.imported?
+        %span &middot;
+        = render "import/shared/imported_badge", text_only: true, importable: _('event')
+--------------------------------------------------------------------------------
+(source_file
+  (ruby_run)
+  (tag
+    (class)
+    (class)
+    (class)
+    (attributes
+      (ruby_attributes))
+    (tag
+      (class)
+      (class)
+      (ruby_interpolation
+        (ruby_attributes))
+      (ruby_run
+        (tag
+          (name)
+          (plain_text))
+        (ruby_output)))))

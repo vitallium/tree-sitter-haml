@@ -12,11 +12,15 @@
           },
           {
             "type": "SYMBOL",
-            "name": "evaluated_code"
+            "name": "ruby_block_output"
           },
           {
             "type": "SYMBOL",
-            "name": "running_code"
+            "name": "ruby_block_run"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "ruby_interpolation"
           }
         ]
       }
@@ -107,7 +111,15 @@
             },
             {
               "type": "SYMBOL",
-              "name": "evaluated_code"
+              "name": "ruby_block_output"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ruby_block_run"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ruby_interpolation"
             },
             {
               "type": "SEQ",
@@ -174,15 +186,19 @@
         "members": [
           {
             "type": "SYMBOL",
+            "name": "ruby_block_output"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "ruby_block_run"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "ruby_interpolation"
+          },
+          {
+            "type": "SYMBOL",
             "name": "tag"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "evaluated_code"
-          },
-          {
-            "type": "SYMBOL",
-            "name": "running_code"
           },
           {
             "type": "SYMBOL",
@@ -374,7 +390,7 @@
         }
       ]
     },
-    "evaluated_code": {
+    "ruby_block_output": {
       "type": "SEQ",
       "members": [
         {
@@ -387,7 +403,7 @@
         }
       ]
     },
-    "running_code": {
+    "ruby_block_run": {
       "type": "SEQ",
       "members": [
         {
@@ -397,6 +413,19 @@
         {
           "type": "SYMBOL",
           "name": "_text"
+        }
+      ]
+    },
+    "ruby_interpolation": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "#"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ruby_attributes"
         }
       ]
     }

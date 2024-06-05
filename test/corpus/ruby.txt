@@ -23,7 +23,7 @@ Tag with the buffered code
 (source_file
   (tag
     (name)
-    (evaluated_code)))
+    (ruby_block_output)))
 
 ================================================================================
 Tag with the buffered code that has spaces inside
@@ -36,7 +36,7 @@ Tag with the buffered code that has spaces inside
 (source_file
   (tag
     (name)
-    (evaluated_code)))
+    (ruby_block_output)))
 
 ================================================================================
 Tag with the child Ruby hashes
@@ -75,7 +75,7 @@ Only evaluated Ruby code
 --------------------------------------------------------------------------------
 
 (source_file
-  (evaluated_code))
+  (ruby_block_output))
 
 ================================================================================
 Only running Ruby code
@@ -86,7 +86,7 @@ Only running Ruby code
 --------------------------------------------------------------------------------
 
 (source_file
-  (running_code))
+  (ruby_block_run))
 
 ================================================================================
 Both runninga and evaluated Ruby code
@@ -98,5 +98,17 @@ Both runninga and evaluated Ruby code
 --------------------------------------------------------------------------------
 
 (source_file
-  (running_code)
-  (evaluated_code))
+  (ruby_block_run)
+  (ruby_block_output))
+
+===
+Simple conditional
+===
+- if true
+  %p= foo
+---
+(source_file
+  (ruby_block_run
+    (tag
+      (name)
+      (ruby_block_output)))

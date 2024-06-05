@@ -38,11 +38,6 @@
     }
   },
   {
-    "type": "evaluated_code",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "html_attributes",
     "named": true,
     "fields": {},
@@ -78,9 +73,29 @@
     }
   },
   {
-    "type": "running_code",
+    "type": "ruby_block_output",
     "named": true,
     "fields": {}
+  },
+  {
+    "type": "ruby_block_run",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "ruby_interpolation",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ruby_attributes",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "source_file",
@@ -91,11 +106,15 @@
       "required": false,
       "types": [
         {
-          "type": "evaluated_code",
+          "type": "ruby_block_output",
           "named": true
         },
         {
-          "type": "running_code",
+          "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_interpolation",
           "named": true
         },
         {
@@ -122,10 +141,6 @@
           "named": true
         },
         {
-          "type": "evaluated_code",
-          "named": true
-        },
-        {
           "type": "id",
           "named": true
         },
@@ -138,7 +153,15 @@
           "named": true
         },
         {
-          "type": "running_code",
+          "type": "ruby_block_output",
+          "named": true
+        },
+        {
+          "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_interpolation",
           "named": true
         },
         {
@@ -158,6 +181,10 @@
   },
   {
     "type": "\"",
+    "named": false
+  },
+  {
+    "type": "#",
     "named": false
   },
   {
