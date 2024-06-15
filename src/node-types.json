@@ -53,11 +53,6 @@
     }
   },
   {
-    "type": "plain_text",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "quoted_attribute_value",
     "named": true,
     "fields": {},
@@ -149,10 +144,6 @@
           "named": true
         },
         {
-          "type": "plain_text",
-          "named": true
-        },
-        {
           "type": "ruby_block_output",
           "named": true
         },
@@ -171,9 +162,18 @@
         {
           "type": "tag",
           "named": true
+        },
+        {
+          "type": "text_content",
+          "named": true
         }
       ]
     }
+  },
+  {
+    "type": "text_content",
+    "named": true,
+    "fields": {}
   },
   {
     "type": " ",

@@ -1,7 +1,7 @@
 // Adapted from https://github.com/zealot128/tree-sitter-pug/blob/master/src/scanner.c
 
-#include <_types/_uint16_t.h>
 #include <assert.h>
+#include <stdint.h>
 
 #include "tree_sitter/parser.h"
 #include "tree_sitter/alloc.h"
@@ -74,7 +74,7 @@ unsigned tree_sitter_haml_external_scanner_serialize(void *payload,
     Scanner *scanner = (Scanner *)payload;
     size_t size = 0;
 
-    int iter = 1;
+    uint32_t iter = 1;
     for (; iter < scanner->indents.len &&
            size < TREE_SITTER_SERIALIZATION_BUFFER_SIZE;
          ++iter) {

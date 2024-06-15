@@ -21,10 +21,8 @@ module.exports = grammar({
         optional($.attributes),
         optional(alias("/", $.self_close_slash)),
         choice(
-          $.plain_text,
+          seq(" ", $.text_content),
           $.ruby_block_output,
-          $.ruby_block_run,
-          $.ruby_interpolation,
           seq($._newline, optional($._children)),
         ),
       ),
@@ -36,6 +34,7 @@ module.exports = grammar({
       prec(
         1,
         choice(
+          $.text_content,
           $.ruby_block_output,
           $.ruby_block_run,
           $.ruby_interpolation,
@@ -62,7 +61,7 @@ module.exports = grammar({
         seq('"', optional(alias(/([-:\w/.]+)/, $.attribute_value)), '"'),
       ),
     _text: () => /(.)+?/,
-    plain_text: ($) => seq(" ", $._text),
+    text_content: ($) => $._text,
     ruby_block_output: ($) => seq("=", $._text),
     ruby_block_run: ($) => seq("-", $._text),
     // FIXME: Ruby interpolation should not be mapped to Ruby attributes

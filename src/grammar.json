@@ -106,20 +106,21 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "plain_text"
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": " "
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "text_content"
+                }
+              ]
             },
             {
               "type": "SYMBOL",
               "name": "ruby_block_output"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ruby_block_run"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ruby_interpolation"
             },
             {
               "type": "SEQ",
@@ -184,6 +185,10 @@
       "content": {
         "type": "CHOICE",
         "members": [
+          {
+            "type": "SYMBOL",
+            "name": "text_content"
+          },
           {
             "type": "SYMBOL",
             "name": "ruby_block_output"
@@ -377,18 +382,9 @@
       "type": "PATTERN",
       "value": "(.)+?"
     },
-    "plain_text": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "STRING",
-          "value": " "
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_text"
-        }
-      ]
+    "text_content": {
+      "type": "SYMBOL",
+      "name": "_text"
     },
     "ruby_block_output": {
       "type": "SEQ",
