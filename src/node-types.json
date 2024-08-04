@@ -70,12 +70,56 @@
   {
     "type": "ruby_block_output",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ruby_block_output",
+          "named": true
+        },
+        {
+          "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_interpolation",
+          "named": true
+        },
+        {
+          "type": "tag",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "ruby_block_run",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ruby_block_output",
+          "named": true
+        },
+        {
+          "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_interpolation",
+          "named": true
+        },
+        {
+          "type": "tag",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "ruby_interpolation",
@@ -86,7 +130,7 @@
       "required": true,
       "types": [
         {
-          "type": "ruby_attributes",
+          "type": "ruby_expression",
           "named": true
         }
       ]
@@ -229,6 +273,10 @@
   },
   {
     "type": "ruby_attributes",
+    "named": true
+  },
+  {
+    "type": "ruby_expression",
     "named": true
   },
   {

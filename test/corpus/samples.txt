@@ -23,9 +23,9 @@ app/views/events/_event.html.haml
         (class)
         (class)
         (ruby_interpolation
-          (ruby_attributes))
+          (ruby_expression))
         (ruby_block_run
           (tag
             (name)
-            (plain_text))
-          (ruby_output)))))
+            (text_content))
+          (ruby_block_output))))))

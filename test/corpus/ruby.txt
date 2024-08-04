@@ -114,4 +114,4 @@ Simple conditional
   (ruby_block_run
     (tag
       (name)
-      (ruby_block_output)))
+      (ruby_block_output))))

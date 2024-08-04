@@ -123,6 +123,10 @@
               "name": "ruby_block_output"
             },
             {
+              "type": "SYMBOL",
+              "name": "ruby_block_run"
+            },
+            {
               "type": "SEQ",
               "members": [
                 {
@@ -185,10 +189,6 @@
       "content": {
         "type": "CHOICE",
         "members": [
-          {
-            "type": "SYMBOL",
-            "name": "text_content"
-          },
           {
             "type": "SYMBOL",
             "name": "ruby_block_output"
@@ -262,10 +262,6 @@
         }
       ]
     },
-    "value": {
-      "type": "PATTERN",
-      "value": "[^\\n}]+"
-    },
     "id": {
       "type": "PATTERN",
       "value": "#[\\w-]+"
@@ -329,8 +325,8 @@
                 {
                   "type": "ALIAS",
                   "content": {
-                    "type": "PATTERN",
-                    "value": "([-:\\w/.]+)"
+                    "type": "SYMBOL",
+                    "name": "_html_identifier"
                   },
                   "named": true,
                   "value": "attribute_value"
@@ -359,8 +355,8 @@
                 {
                   "type": "ALIAS",
                   "content": {
-                    "type": "PATTERN",
-                    "value": "([-:\\w/.]+)"
+                    "type": "SYMBOL",
+                    "name": "_html_identifier"
                   },
                   "named": true,
                   "value": "attribute_value"
@@ -380,7 +376,7 @@
     },
     "_text": {
       "type": "PATTERN",
-      "value": "(.)+?"
+      "value": "[^\\n]+"
     },
     "text_content": {
       "type": "SYMBOL",
@@ -396,6 +392,27 @@
         {
           "type": "SYMBOL",
           "name": "_text"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_newline"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_children"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -409,6 +426,27 @@
         {
           "type": "SYMBOL",
           "name": "_text"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_newline"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_children"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
         }
       ]
     },
@@ -421,9 +459,17 @@
         },
         {
           "type": "SYMBOL",
-          "name": "ruby_attributes"
+          "name": "ruby_expression"
         }
       ]
+    },
+    "ruby_expression": {
+      "type": "PATTERN",
+      "value": "\\{[^}]*\\}"
+    },
+    "_html_identifier": {
+      "type": "PATTERN",
+      "value": "[-:\\w/.]+"
     }
   },
   "extras": [

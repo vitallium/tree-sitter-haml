@@ -23,6 +23,7 @@ module.exports = grammar({
         choice(
           seq(" ", $.text_content),
           $.ruby_block_output,
+          $.ruby_block_run,
           seq($._newline, optional($._children)),
         ),
       ),
@@ -34,7 +35,6 @@ module.exports = grammar({
       prec(
         1,
         choice(
-          $.text_content,
           $.ruby_block_output,
           $.ruby_block_run,
           $.ruby_interpolation,
@@ -45,7 +45,6 @@ module.exports = grammar({
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
     attributes: ($) => choice($.html_attributes, $.ruby_attributes),
-    value: () => /[^\n}]+/,
     // Starts with #
     id: () => /#[\w-]+/,
     // Starts with %
@@ -57,14 +56,17 @@ module.exports = grammar({
       seq($.attribute_name, optional(seq("=", $.quoted_attribute_value))),
     quoted_attribute_value: ($) =>
       choice(
-        seq("'", optional(alias(/([-:\w/.]+)/, $.attribute_value)), "'"),
-        seq('"', optional(alias(/([-:\w/.]+)/, $.attribute_value)), '"'),
+        seq("'", optional(alias($._html_identifier, $.attribute_value)), "'"),
+        seq('"', optional(alias($._html_identifier, $.attribute_value)), '"'),
       ),
-    _text: () => /(.)+?/,
+    _text: () => /[^\n]+/,
     text_content: ($) => $._text,
-    ruby_block_output: ($) => seq("=", $._text),
-    ruby_block_run: ($) => seq("-", $._text),
-    // FIXME: Ruby interpolation should not be mapped to Ruby attributes
-    ruby_interpolation: ($) => seq("#", $.ruby_attributes),
+    ruby_block_output: ($) =>
+      seq("=", $._text, seq($._newline, optional($._children))),
+    ruby_block_run: ($) =>
+      seq("-", $._text, seq($._newline, optional($._children))),
+    ruby_interpolation: ($) => seq("#", $.ruby_expression),
+    ruby_expression: () => /\{[^}]*\}/,
+    _html_identifier: () => /[-:\w/.]+/,
   },
 });
