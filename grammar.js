@@ -21,9 +21,8 @@ module.exports = grammar({
         optional($.attributes),
         optional(alias("/", $.self_close_slash)),
         choice(
-          seq(" ", $.text_content),
           $.ruby_block_output,
-          $.ruby_block_run,
+          seq(" ", $.text_content),
           seq($._newline, optional($._children)),
         ),
       ),
@@ -32,15 +31,11 @@ module.exports = grammar({
         seq($._indent, repeat1($._children_choice), optional($._dedent)),
       ),
     _children_choice: ($) =>
-      prec(
-        1,
-        choice(
-          $.ruby_block_output,
-          $.ruby_block_run,
-          $.ruby_interpolation,
-          $.tag,
-          $._newline,
-        ),
+      choice(
+        $.tag,
+        $.ruby_block_output,
+        $.ruby_block_run,
+        $.ruby_interpolation,
       ),
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
@@ -61,10 +56,9 @@ module.exports = grammar({
       ),
     _text: () => /[^\n]+/,
     text_content: ($) => $._text,
-    ruby_block_output: ($) =>
-      seq("=", $._text, seq($._newline, optional($._children))),
+    ruby_block_output: ($) => seq("=", $._text),
     ruby_block_run: ($) =>
-      seq("-", $._text, seq($._newline, optional($._children))),
+      seq("-", $._text, optional(seq($._newline, optional($._children)))),
     ruby_interpolation: ($) => seq("#", $.ruby_expression),
     ruby_expression: () => /\{[^}]*\}/,
     _html_identifier: () => /[-:\w/.]+/,
