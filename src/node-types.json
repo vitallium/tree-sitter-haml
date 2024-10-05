@@ -55,37 +55,7 @@
   {
     "type": "comment",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "comment",
-          "named": true
-        },
-        {
-          "type": "ruby_block_output",
-          "named": true
-        },
-        {
-          "type": "ruby_block_run",
-          "named": true
-        },
-        {
-          "type": "ruby_interpolation",
-          "named": true
-        },
-        {
-          "type": "tag",
-          "named": true
-        },
-        {
-          "type": "text_content",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "html_attributes",

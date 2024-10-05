@@ -34,11 +34,11 @@ module.exports = grammar({
     _children_choice: ($) =>
       choice(
         $.tag,
-        $.comment,
         $.ruby_block_output,
         $.ruby_block_run,
         $.ruby_interpolation,
         $.text_content,
+        $.comment,
       ),
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
@@ -49,8 +49,16 @@ module.exports = grammar({
     name: () => /%([-:\w]+)/,
     // Starts with . (dot)
     class_name: () => /[_a-z0-9\-]*[_a-zA-Z][_a-zA-Z0-9\-]*/i,
-    // Comment starts with /
-    comment: ($) => seq("/", choice($._text, seq($._newline, $._children))),
+    // HTML Comments starts with /
+    comment: ($) =>
+      seq(
+        "/",
+        $._text,
+        $._newline,
+        optional(
+          prec.right(seq($._indent, repeat1($._text), optional($._dedent))),
+        ),
+      ),
     class: ($) => seq(".", $.class_name),
     attribute_name: () => /#?[\w@\-:]+/,
     attribute: ($) =>

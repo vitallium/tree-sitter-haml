@@ -26,12 +26,20 @@ Comment that wraps indented sections of code
 --------------------------------------------------------------------------------
 
 (source_file
-  (comment
-    (tag
-      (name)
-      (text_content))
-    (tag
-      (name)
-      (tag
-        (name)
-        (text_content)))))
+  (comment))
+
+================================================================================
+Conditional comment
+================================================================================
+
+/[if IE]
+  %a{ :href => 'http://www.mozilla.com/en-US/firefox/' }
+    %h1 Get Firefox
+%h1
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment)
+  (tag
+    (name)))
