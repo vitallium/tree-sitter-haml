@@ -9,6 +9,7 @@ module.exports = grammar({
       repeat(
         choice(
           $.tag,
+          $.comment,
           $.ruby_block_output,
           $.ruby_block_run,
           $.ruby_interpolation,
@@ -33,6 +34,7 @@ module.exports = grammar({
     _children_choice: ($) =>
       choice(
         $.tag,
+        $.comment,
         $.ruby_block_output,
         $.ruby_block_run,
         $.ruby_interpolation,
@@ -47,6 +49,8 @@ module.exports = grammar({
     name: () => /%([-:\w]+)/,
     // Starts with . (dot)
     class_name: () => /[_a-z0-9\-]*[_a-zA-Z][_a-zA-Z0-9\-]*/i,
+    // Comment starts with /
+    comment: ($) => seq("/", choice($._text, seq($._newline, $._children))),
     class: ($) => seq(".", $.class_name),
     attribute_name: () => /#?[\w@\-:]+/,
     attribute: ($) =>
@@ -56,8 +60,8 @@ module.exports = grammar({
         seq("'", optional(alias($._html_identifier, $.attribute_value)), "'"),
         seq('"', optional(alias($._html_identifier, $.attribute_value)), '"'),
       ),
-    _text: () => token(prec(-1, /[^\n]+/)),
-    text_content: ($) => $._text,
+    _text: () => /[^\n]+/,
+    text_content: ($) => token(prec(-1, /[^\n]+/)),
     ruby_block_output: ($) => seq("=", alias($._text, $.ruby_code)),
     ruby_block_run: ($) =>
       seq(

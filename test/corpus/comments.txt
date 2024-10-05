@@ -1,0 +1,37 @@
+================================================================================
+Simple comment
+================================================================================
+
+%peanutbutterjelly
+  / This is the peanutbutterjelly element
+  I like sandwiches!
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (name)
+    (comment)
+    (text_content)))
+
+================================================================================
+Comment that wraps indented sections of code
+================================================================================
+
+/
+  %p This doesn't render...
+  %div
+    %h1 Because it's commented out!
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (comment
+    (tag
+      (name)
+      (text_content))
+    (tag
+      (name)
+      (tag
+        (name)
+        (text_content)))))

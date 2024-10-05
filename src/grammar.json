@@ -12,6 +12,10 @@
           },
           {
             "type": "SYMBOL",
+            "name": "comment"
+          },
+          {
+            "type": "SYMBOL",
             "name": "ruby_block_output"
           },
           {
@@ -188,6 +192,10 @@
         },
         {
           "type": "SYMBOL",
+          "name": "comment"
+        },
+        {
+          "type": "SYMBOL",
           "name": "ruby_block_output"
         },
         {
@@ -266,6 +274,37 @@
       "type": "PATTERN",
       "value": "[_a-z0-9\\-]*[_a-zA-Z][_a-zA-Z0-9\\-]*",
       "flags": "i"
+    },
+    "comment": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "/"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_text"
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_newline"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_children"
+                }
+              ]
+            }
+          ]
+        }
+      ]
     },
     "class": {
       "type": "SEQ",
@@ -380,6 +419,10 @@
       ]
     },
     "_text": {
+      "type": "PATTERN",
+      "value": "[^\\n]+"
+    },
+    "text_content": {
       "type": "TOKEN",
       "content": {
         "type": "PREC",
@@ -389,10 +432,6 @@
           "value": "[^\\n]+"
         }
       }
-    },
-    "text_content": {
-      "type": "SYMBOL",
-      "name": "_text"
     },
     "ruby_block_output": {
       "type": "SEQ",

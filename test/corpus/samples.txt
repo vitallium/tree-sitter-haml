@@ -11,21 +11,54 @@ app/views/events/_event.html.haml
         = render "import/shared/imported_badge", text_only: true, importable: _('event')
 
 --------------------------------------------------------------------------------
+
 (source_file
   (ruby_block_run
+    (ruby_code)
     (tag
-      (class)
-      (class)
-      (class)
+      (class
+        (class_name))
+      (class
+        (class_name))
+      (class
+        (class_name))
       (attributes
         (ruby_attributes))
       (tag
-        (class)
-        (class)
+        (class
+          (class_name))
+        (class
+          (class_name))
         (ruby_interpolation
           (ruby_expression))
         (ruby_block_run
+          (ruby_code)
           (tag
             (name)
             (text_content))
-          (ruby_block_output))))))
+          (ruby_block_output
+            (ruby_code)))))))
+
+================================================================================
+Nav
+================================================================================
+
+#content
+  .title
+    %h1= @title
+    = link_to 'Home', home_url
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (id)
+    (tag
+      (class
+       (class_name))
+      (tag
+        (name)
+        (ruby_block_output
+          (ruby_code)))
+      (ruby_block_output
+        (ruby_code)))))

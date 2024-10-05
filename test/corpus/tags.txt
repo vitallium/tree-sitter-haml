@@ -20,7 +20,8 @@ Tag with the class name only
 
 (source_file
   (tag
-    (class)))
+    (class
+      (class_name))))
 
 ================================================================================
 Tag with ID only
@@ -59,7 +60,8 @@ Tag with name, ID and class
   (tag
     (name)
     (id)
-    (class)))
+    (class
+      (class_name))))
 
 ================================================================================
 Tag with ID, class and name
@@ -72,7 +74,8 @@ Tag with ID, class and name
 (source_file
   (tag
     (id)
-    (class)
+    (class
+      (class_name))
     (name)))
 
 ================================================================================
@@ -127,3 +130,37 @@ Tag with nested text
   (tag
     (name)
     (text_content)))
+
+================================================================================
+Tag with nested Ruby output block
+================================================================================
+
+%p
+  = @variable
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (name)
+    (ruby_block_output
+        (ruby_code))))
+
+================================================================================
+Tag with nested Ruby evaluate block
+================================================================================
+
+%p
+  - if true
+    %div Hello
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (name)
+    (ruby_block_run
+      (ruby_code)
+      (tag
+        (name)
+        (text_content)))))
