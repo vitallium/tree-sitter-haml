@@ -89,7 +89,7 @@ Only running Ruby code
   (ruby_block_run))
 
 ================================================================================
-Both runninga and evaluated Ruby code
+Both running and evaluated Ruby code
 ================================================================================
 
 - @variable = 'test'

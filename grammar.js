@@ -36,6 +36,7 @@ module.exports = grammar({
         $.ruby_block_output,
         $.ruby_block_run,
         $.ruby_interpolation,
+        $.text_content,
       ),
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
@@ -54,7 +55,7 @@ module.exports = grammar({
         seq("'", optional(alias($._html_identifier, $.attribute_value)), "'"),
         seq('"', optional(alias($._html_identifier, $.attribute_value)), '"'),
       ),
-    _text: () => /[^\n]+/,
+    _text: () => token(prec(-1, /[^\n]+/)),
     text_content: ($) => $._text,
     ruby_block_output: ($) => seq("=", $._text),
     ruby_block_run: ($) =>
