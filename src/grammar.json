@@ -262,6 +262,11 @@
       "type": "PATTERN",
       "value": "%([-:\\w]+)"
     },
+    "class_name": {
+      "type": "PATTERN",
+      "value": "[_a-z0-9\\-]*[_a-zA-Z][_a-zA-Z0-9\\-]*",
+      "flags": "i"
+    },
     "class": {
       "type": "SEQ",
       "members": [
@@ -270,13 +275,8 @@
           "value": "."
         },
         {
-          "type": "FIELD",
-          "name": "class_name",
-          "content": {
-            "type": "PATTERN",
-            "value": "[_a-z0-9\\-]*[_a-zA-Z][_a-zA-Z0-9\\-]*",
-            "flags": "i"
-          }
+          "type": "SYMBOL",
+          "name": "class_name"
         }
       ]
     },
@@ -402,12 +402,13 @@
           "value": "="
         },
         {
-          "type": "FIELD",
-          "name": "ruby_code",
+          "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
             "name": "_text"
-          }
+          },
+          "named": true,
+          "value": "ruby_code"
         }
       ]
     },
@@ -419,12 +420,13 @@
           "value": "-"
         },
         {
-          "type": "FIELD",
-          "name": "ruby_code",
+          "type": "ALIAS",
           "content": {
             "type": "SYMBOL",
             "name": "_text"
-          }
+          },
+          "named": true,
+          "value": "ruby_code"
         },
         {
           "type": "CHOICE",

@@ -8,12 +8,12 @@
 #define STATE_COUNT 90
 #define LARGE_STATE_COUNT 2
 #define SYMBOL_COUNT 39
-#define ALIAS_COUNT 0
+#define ALIAS_COUNT 1
 #define TOKEN_COUNT 22
 #define EXTERNAL_TOKEN_COUNT 4
-#define FIELD_COUNT 2
+#define FIELD_COUNT 0
 #define MAX_ALIAS_SEQUENCE_LENGTH 6
-#define PRODUCTION_ID_COUNT 3
+#define PRODUCTION_ID_COUNT 2
 
 enum ts_symbol_identifiers {
   anon_sym_SLASH = 1,
@@ -22,8 +22,8 @@ enum ts_symbol_identifiers {
   anon_sym_RPAREN = 4,
   sym_id = 5,
   sym_name = 6,
-  anon_sym_DOT = 7,
-  aux_sym_class_token1 = 8,
+  sym_class_name = 7,
+  anon_sym_DOT = 8,
   sym_attribute_name = 9,
   anon_sym_EQ = 10,
   anon_sym_SQUOTE = 11,
@@ -54,6 +54,7 @@ enum ts_symbol_identifiers {
   aux_sym_tag_repeat1 = 36,
   aux_sym__children_repeat1 = 37,
   aux_sym_html_attributes_repeat1 = 38,
+  alias_sym_ruby_code = 39,
 };
 
 static const char * const ts_symbol_names[] = {
@@ -64,8 +65,8 @@ static const char * const ts_symbol_names[] = {
   [anon_sym_RPAREN] = ")",
   [sym_id] = "id",
   [sym_name] = "name",
+  [sym_class_name] = "class_name",
   [anon_sym_DOT] = ".",
-  [aux_sym_class_token1] = "class_token1",
   [sym_attribute_name] = "attribute_name",
   [anon_sym_EQ] = "=",
   [anon_sym_SQUOTE] = "'",
@@ -96,6 +97,7 @@ static const char * const ts_symbol_names[] = {
   [aux_sym_tag_repeat1] = "tag_repeat1",
   [aux_sym__children_repeat1] = "_children_repeat1",
   [aux_sym_html_attributes_repeat1] = "html_attributes_repeat1",
+  [alias_sym_ruby_code] = "ruby_code",
 };
 
 static const TSSymbol ts_symbol_map[] = {
@@ -106,8 +108,8 @@ static const TSSymbol ts_symbol_map[] = {
   [anon_sym_RPAREN] = anon_sym_RPAREN,
   [sym_id] = sym_id,
   [sym_name] = sym_name,
+  [sym_class_name] = sym_class_name,
   [anon_sym_DOT] = anon_sym_DOT,
-  [aux_sym_class_token1] = aux_sym_class_token1,
   [sym_attribute_name] = sym_attribute_name,
   [anon_sym_EQ] = anon_sym_EQ,
   [anon_sym_SQUOTE] = anon_sym_SQUOTE,
@@ -138,6 +140,7 @@ static const TSSymbol ts_symbol_map[] = {
   [aux_sym_tag_repeat1] = aux_sym_tag_repeat1,
   [aux_sym__children_repeat1] = aux_sym__children_repeat1,
   [aux_sym_html_attributes_repeat1] = aux_sym_html_attributes_repeat1,
+  [alias_sym_ruby_code] = alias_sym_ruby_code,
 };
 
 static const TSSymbolMetadata ts_symbol_metadata[] = {
@@ -169,12 +172,12 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = true,
     .named = true,
   },
+  [sym_class_name] = {
+    .visible = true,
+    .named = true,
+  },
   [anon_sym_DOT] = {
     .visible = true,
-    .named = false,
-  },
-  [aux_sym_class_token1] = {
-    .visible = false,
     .named = false,
   },
   [sym_attribute_name] = {
@@ -297,33 +300,17 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .visible = false,
     .named = false,
   },
-};
-
-enum ts_field_identifiers {
-  field_class_name = 1,
-  field_ruby_code = 2,
-};
-
-static const char * const ts_field_names[] = {
-  [0] = NULL,
-  [field_class_name] = "class_name",
-  [field_ruby_code] = "ruby_code",
-};
-
-static const TSFieldMapSlice ts_field_map_slices[PRODUCTION_ID_COUNT] = {
-  [1] = {.index = 0, .length = 1},
-  [2] = {.index = 1, .length = 1},
-};
-
-static const TSFieldMapEntry ts_field_map_entries[] = {
-  [0] =
-    {field_class_name, 1},
-  [1] =
-    {field_ruby_code, 1},
+  [alias_sym_ruby_code] = {
+    .visible = true,
+    .named = true,
+  },
 };
 
 static const TSSymbol ts_alias_sequences[PRODUCTION_ID_COUNT][MAX_ALIAS_SEQUENCE_LENGTH] = {
   [0] = {0},
+  [1] = {
+    [1] = alias_sym_ruby_code,
+  },
 };
 
 static const uint16_t ts_non_terminal_alias_map[] = {
@@ -437,7 +424,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
         '(', 17,
         ')', 18,
         '-', 31,
-        '.', 21,
+        '.', 22,
         '/', 15,
         '=', 24,
         '{', 7,
@@ -450,7 +437,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '#') ADVANCE(32);
       if (lookahead == '%') ADVANCE(29);
       if (lookahead == '-') ADVANCE(31);
-      if (lookahead == '.') ADVANCE(21);
+      if (lookahead == '.') ADVANCE(22);
       if (lookahead == '=') ADVANCE(24);
       if (('\t' <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') ADVANCE(27);
@@ -467,7 +454,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '#') ADVANCE(10);
       if (lookahead == '%') ADVANCE(11);
       if (lookahead == '(') ADVANCE(17);
-      if (lookahead == '.') ADVANCE(21);
+      if (lookahead == '.') ADVANCE(22);
       if (lookahead == '/') ADVANCE(15);
       if (lookahead == '=') ADVANCE(24);
       if (('\t' <= lookahead && lookahead <= '\r')) SKIP(3);
@@ -516,14 +503,14 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           ('0' <= lookahead && lookahead <= '9')) ADVANCE(9);
       if (('A' <= lookahead && lookahead <= 'Z') ||
           lookahead == '_' ||
-          ('a' <= lookahead && lookahead <= 'z')) ADVANCE(22);
+          ('a' <= lookahead && lookahead <= 'z')) ADVANCE(21);
       END_STATE();
     case 9:
       if (lookahead == '-' ||
           ('0' <= lookahead && lookahead <= '9')) ADVANCE(9);
       if (('A' <= lookahead && lookahead <= 'Z') ||
           lookahead == '_' ||
-          ('a' <= lookahead && lookahead <= 'z')) ADVANCE(22);
+          ('a' <= lookahead && lookahead <= 'z')) ADVANCE(21);
       END_STATE();
     case 10:
       if (lookahead == '-' ||
@@ -552,7 +539,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '#') ADVANCE(32);
       if (lookahead == '%') ADVANCE(29);
       if (lookahead == '-') ADVANCE(31);
-      if (lookahead == '.') ADVANCE(21);
+      if (lookahead == '.') ADVANCE(22);
       if (lookahead == '=') ADVANCE(24);
       if (('\t' <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') ADVANCE(27);
@@ -591,15 +578,15 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
           ('a' <= lookahead && lookahead <= 'z')) ADVANCE(20);
       END_STATE();
     case 21:
-      ACCEPT_TOKEN(anon_sym_DOT);
-      END_STATE();
-    case 22:
-      ACCEPT_TOKEN(aux_sym_class_token1);
+      ACCEPT_TOKEN(sym_class_name);
       if (lookahead == '-' ||
-          ('0' <= lookahead && lookahead <= '9')) ADVANCE(22);
+          ('0' <= lookahead && lookahead <= '9')) ADVANCE(21);
       if (('A' <= lookahead && lookahead <= 'Z') ||
           lookahead == '_' ||
-          ('a' <= lookahead && lookahead <= 'z')) ADVANCE(22);
+          ('a' <= lookahead && lookahead <= 'z')) ADVANCE(21);
+      END_STATE();
+    case 22:
+      ACCEPT_TOKEN(anon_sym_DOT);
       END_STATE();
     case 23:
       ACCEPT_TOKEN(sym_attribute_name);
@@ -624,7 +611,7 @@ static bool ts_lex(TSLexer *lexer, TSStateId state) {
       if (lookahead == '#') ADVANCE(32);
       if (lookahead == '%') ADVANCE(29);
       if (lookahead == '-') ADVANCE(31);
-      if (lookahead == '.') ADVANCE(21);
+      if (lookahead == '.') ADVANCE(22);
       if (lookahead == '=') ADVANCE(24);
       if (('\t' <= lookahead && lookahead <= '\r') ||
           lookahead == ' ') ADVANCE(27);
@@ -1765,7 +1752,7 @@ static const uint16_t ts_small_parse_table[] = {
       sym_ruby_expression,
   [1254] = 1,
     ACTIONS(261), 1,
-      aux_sym_class_token1,
+      sym_class_name,
   [1258] = 1,
     ACTIONS(263), 1,
       sym_ruby_expression,
@@ -1935,8 +1922,8 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [112] = {.entry = {.count = 1, .reusable = true}}, SHIFT(5),
   [114] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_tag, 4, 0, 0),
   [116] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_tag, 4, 0, 0),
-  [118] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_ruby_block_run, 3, 0, 2),
-  [120] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_ruby_block_run, 3, 0, 2),
+  [118] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_ruby_block_run, 3, 0, 1),
+  [120] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_ruby_block_run, 3, 0, 1),
   [122] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_tag, 3, 0, 0),
   [124] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_tag, 3, 0, 0),
   [126] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_tag, 2, 0, 0),
@@ -1945,24 +1932,24 @@ static const TSParseActionEntry ts_parse_actions[] = {
   [132] = {.entry = {.count = 1, .reusable = true}}, REDUCE(aux_sym_tag_repeat1, 2, 0, 0),
   [134] = {.entry = {.count = 2, .reusable = false}}, REDUCE(aux_sym_tag_repeat1, 2, 0, 0), SHIFT_REPEAT(18),
   [137] = {.entry = {.count = 2, .reusable = false}}, REDUCE(aux_sym_tag_repeat1, 2, 0, 0), SHIFT_REPEAT(82),
-  [140] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_ruby_block_run, 2, 0, 2),
-  [142] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_ruby_block_run, 2, 0, 2),
+  [140] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_ruby_block_run, 2, 0, 1),
+  [142] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_ruby_block_run, 2, 0, 1),
   [144] = {.entry = {.count = 1, .reusable = true}}, SHIFT(15),
   [146] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_text_content, 1, 0, 0),
   [148] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_text_content, 1, 0, 0),
   [150] = {.entry = {.count = 1, .reusable = true}}, SHIFT(6),
   [152] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_ruby_interpolation, 2, 0, 0),
   [154] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_ruby_interpolation, 2, 0, 0),
-  [156] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_ruby_block_output, 2, 0, 2),
-  [158] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_ruby_block_output, 2, 0, 2),
-  [160] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_ruby_block_run, 4, 0, 2),
-  [162] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_ruby_block_run, 4, 0, 2),
+  [156] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_ruby_block_output, 2, 0, 1),
+  [158] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_ruby_block_output, 2, 0, 1),
+  [160] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_ruby_block_run, 4, 0, 1),
+  [162] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_ruby_block_run, 4, 0, 1),
   [164] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym__children, 3, 0, 0),
   [166] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym__children, 3, 0, 0),
   [168] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_tag, 6, 0, 0),
   [170] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_tag, 6, 0, 0),
-  [172] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_class, 2, 0, 1),
-  [174] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_class, 2, 0, 1),
+  [172] = {.entry = {.count = 1, .reusable = false}}, REDUCE(sym_class, 2, 0, 0),
+  [174] = {.entry = {.count = 1, .reusable = true}}, REDUCE(sym_class, 2, 0, 0),
   [176] = {.entry = {.count = 1, .reusable = true}}, SHIFT(35),
   [178] = {.entry = {.count = 1, .reusable = false}}, SHIFT(51),
   [180] = {.entry = {.count = 1, .reusable = true}}, SHIFT(76),
@@ -2092,9 +2079,6 @@ TS_PUBLIC const TSLanguage *tree_sitter_haml(void) {
     .small_parse_table_map = ts_small_parse_table_map,
     .parse_actions = ts_parse_actions,
     .symbol_names = ts_symbol_names,
-    .field_names = ts_field_names,
-    .field_map_slices = ts_field_map_slices,
-    .field_map_entries = ts_field_map_entries,
     .symbol_metadata = ts_symbol_metadata,
     .public_symbol_map = ts_symbol_map,
     .alias_map = ts_non_terminal_alias_map,
