@@ -22,6 +22,7 @@ Comment that wraps indented sections of code
   %p This doesn't render...
   %div
     %h1 Because it's commented out!
+
 .foo
 
 --------------------------------------------------------------------------------
@@ -39,6 +40,7 @@ Conditional comment
 /[if IE]
   %a{ :href => 'http://www.mozilla.com/en-US/firefox/' }
     %h1 Get Firefox
+
 %h1
 
 --------------------------------------------------------------------------------

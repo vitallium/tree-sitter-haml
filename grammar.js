@@ -49,14 +49,31 @@ module.exports = grammar({
     name: () => /%([-:\w]+)/,
     // Starts with . (dot)
     class_name: () => /[_a-z0-9\-]*[_a-zA-Z][_a-zA-Z0-9\-]*/i,
+    comment: ($) => choice($._comment_line, $._comment_block),
     // HTML Comments starts with /
-    comment: ($) =>
+    _comment_line: ($) =>
       seq(
         "/",
-        $._text,
+        $._comment_content,
         $._newline,
-        optional(seq($._indent, repeat1(seq($._text, $._newline)), $._dedent)),
+        optional(
+          seq(
+            $._indent,
+            repeat1(seq($._comment_content, $._newline)),
+            $._dedent,
+          ),
+        ),
       ),
+    _comment_block: ($) =>
+      seq(
+        "/",
+        optional($.comment_condition),
+        $._newline,
+        $._indent,
+        repeat1(seq($._comment_content, $._newline)),
+        $._dedent,
+      ),
+    comment_condition: ($) => seq("[", $._text, "]"),
     class: ($) => seq(".", $.class_name),
     attribute_name: () => /#?[\w@\-:]+/,
     attribute: ($) =>
@@ -67,6 +84,7 @@ module.exports = grammar({
         seq('"', optional(alias($._html_identifier, $.attribute_value)), '"'),
       ),
     _text: () => /[^\n]+/,
+    _comment_content: () => /[^\n]*/,
     text_content: ($) => token(prec(-1, /[^\n]+/)),
     ruby_block_output: ($) => seq("=", alias($._text, $.ruby_code)),
     ruby_block_run: ($) =>
