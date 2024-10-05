@@ -22,11 +22,15 @@ Comment that wraps indented sections of code
   %p This doesn't render...
   %div
     %h1 Because it's commented out!
+.foo
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (comment))
+  (comment)
+  (tag
+    (class
+      (class_name))))
 
 ================================================================================
 Conditional comment

@@ -55,9 +55,7 @@ module.exports = grammar({
         "/",
         $._text,
         $._newline,
-        optional(
-          prec.right(seq($._indent, repeat1($._text), optional($._dedent))),
-        ),
+        optional(seq($._indent, repeat1(seq($._text, $._newline)), $._dedent)),
       ),
     class: ($) => seq(".", $.class_name),
     attribute_name: () => /#?[\w@\-:]+/,
