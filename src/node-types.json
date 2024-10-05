@@ -38,6 +38,11 @@
     }
   },
   {
+    "type": "class",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "html_attributes",
     "named": true,
     "fields": {},
@@ -230,6 +235,10 @@
     "named": false
   },
   {
+    "type": ".",
+    "named": false
+  },
+  {
     "type": "=",
     "named": false
   },
@@ -239,10 +248,6 @@
   },
   {
     "type": "attribute_value",
-    "named": true
-  },
-  {
-    "type": "class",
     "named": true
   },
   {

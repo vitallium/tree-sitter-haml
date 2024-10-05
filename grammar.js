@@ -46,7 +46,8 @@ module.exports = grammar({
     // Starts with %
     name: () => /%([-:\w]+)/,
     // Starts with . (dot)
-    class: () => /\.[_a-z0-9\-]*[_a-zA-Z][_a-zA-Z0-9\-]*/i,
+    class: () =>
+      seq(".", field("class_name", /[_a-z0-9\-]*[_a-zA-Z][_a-zA-Z0-9\-]*/i)),
     attribute_name: () => /#?[\w@\-:]+/,
     attribute: ($) =>
       seq($.attribute_name, optional(seq("=", $.quoted_attribute_value))),
@@ -57,9 +58,13 @@ module.exports = grammar({
       ),
     _text: () => token(prec(-1, /[^\n]+/)),
     text_content: ($) => $._text,
-    ruby_block_output: ($) => seq("=", $._text),
+    ruby_block_output: ($) => seq("=", field("ruby_code", $._text)),
     ruby_block_run: ($) =>
-      seq("-", $._text, optional(seq($._newline, optional($._children)))),
+      seq(
+        "-",
+        field("ruby_code", $._text),
+        optional(seq($._newline, optional($._children))),
+      ),
     ruby_interpolation: ($) => seq("#", $.ruby_expression),
     ruby_expression: () => /\{[^}]*\}/,
     _html_identifier: () => /[-:\w/.]+/,

@@ -263,9 +263,22 @@
       "value": "%([-:\\w]+)"
     },
     "class": {
-      "type": "PATTERN",
-      "value": "\\.[_a-z0-9\\-]*[_a-zA-Z][_a-zA-Z0-9\\-]*",
-      "flags": "i"
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "."
+        },
+        {
+          "type": "FIELD",
+          "name": "class_name",
+          "content": {
+            "type": "PATTERN",
+            "value": "[_a-z0-9\\-]*[_a-zA-Z][_a-zA-Z0-9\\-]*",
+            "flags": "i"
+          }
+        }
+      ]
     },
     "attribute_name": {
       "type": "PATTERN",
@@ -389,8 +402,12 @@
           "value": "="
         },
         {
-          "type": "SYMBOL",
-          "name": "_text"
+          "type": "FIELD",
+          "name": "ruby_code",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_text"
+          }
         }
       ]
     },
@@ -402,8 +419,12 @@
           "value": "-"
         },
         {
-          "type": "SYMBOL",
-          "name": "_text"
+          "type": "FIELD",
+          "name": "ruby_code",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_text"
+          }
         },
         {
           "type": "CHOICE",
