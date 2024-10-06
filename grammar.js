@@ -17,8 +17,8 @@ module.exports = grammar({
       ),
     tag: ($) =>
       seq(
-        choice($.name, $.id, $.class),
-        optional(repeat1(choice($.name, $.id, $.class))),
+        choice($.tag_name, $.id, $.class),
+        optional(repeat1(choice($.tag_name, $.id, $.class))),
         optional($.attributes),
         optional(alias("/", $.self_close_slash)),
         choice(
@@ -46,7 +46,7 @@ module.exports = grammar({
     // Starts with #
     id: () => /#[\w-]+/,
     // Starts with %
-    name: () => /%([-:\w]+)/,
+    tag_name: () => /%([-:\w]+)/,
     // Starts with . (dot)
     class_name: () => /[_a-z0-9\-]*[_a-zA-Z][_a-zA-Z0-9\-]*/i,
     comment: ($) => choice($._comment_line, $._comment_block),

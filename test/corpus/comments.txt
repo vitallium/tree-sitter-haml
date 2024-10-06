@@ -10,7 +10,7 @@ Simple comment
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (comment)
     (text_content)))
 
@@ -47,7 +47,7 @@ Conditional comment
 (source_file
   (comment)
   (tag
-    (name)))
+    (tag_name)))
 
 ================================================================================
 HAML single-line comment
@@ -61,11 +61,11 @@ HAML single-line comment
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (text_content))
   (comment)
   (tag
-    (name)
+    (tag_name)
     (text_content)))
 
 ================================================================================
@@ -83,11 +83,11 @@ HAML multi-line comment
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (text_content))
   (comment)
   (tag
-    (name)
+    (tag_name)
     (text_content)))
 
 ================================================================================

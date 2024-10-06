@@ -9,9 +9,9 @@ Nesting with two tags
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (tag
-      (name))))
+      (tag_name))))
 
 ================================================================================
 Nesting with three tags
@@ -25,8 +25,8 @@ Nesting with three tags
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (tag
-      (name)
+      (tag_name)
       (tag
-        (name)))))
+        (tag_name)))))

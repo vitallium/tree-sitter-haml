@@ -252,10 +252,6 @@
           "named": true
         },
         {
-          "type": "name",
-          "named": true
-        },
-        {
           "type": "ruby_block_output",
           "named": true
         },
@@ -273,6 +269,10 @@
         },
         {
           "type": "tag",
+          "named": true
+        },
+        {
+          "type": "tag_name",
           "named": true
         },
         {
@@ -351,10 +351,6 @@
     "named": true
   },
   {
-    "type": "name",
-    "named": true
-  },
-  {
     "type": "ruby_attributes",
     "named": true
   },
@@ -368,6 +364,10 @@
   },
   {
     "type": "self_close_slash",
+    "named": true
+  },
+  {
+    "type": "tag_name",
     "named": true
   },
   {

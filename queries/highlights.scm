@@ -4,7 +4,7 @@
 ] @operator
 
 (attribute_name) @attribute
-(tag) @tag
+(tag_name) @tag
 (class) @type
 (comment) @comment
 

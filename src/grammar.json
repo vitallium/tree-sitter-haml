@@ -38,7 +38,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "name"
+              "name": "tag_name"
             },
             {
               "type": "SYMBOL",
@@ -60,7 +60,7 @@
                 "members": [
                   {
                     "type": "SYMBOL",
-                    "name": "name"
+                    "name": "tag_name"
                   },
                   {
                     "type": "SYMBOL",
@@ -267,7 +267,7 @@
       "type": "PATTERN",
       "value": "#[\\w-]+"
     },
-    "name": {
+    "tag_name": {
       "type": "PATTERN",
       "value": "%([-:\\w]+)"
     },

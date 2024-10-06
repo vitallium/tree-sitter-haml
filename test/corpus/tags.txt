@@ -8,7 +8,7 @@ Tag with the name only
 
 (source_file
   (tag
-    (name)))
+    (tag_name)))
 
 ================================================================================
 Tag with the class name only
@@ -45,7 +45,7 @@ Tag with name and ID
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (id)))
 
 ================================================================================
@@ -58,7 +58,7 @@ Tag with name, ID and class
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (id)
     (class
       (class_name))))
@@ -76,7 +76,7 @@ Tag with ID, class and name
     (id)
     (class
       (class_name))
-    (name)))
+    (tag_name)))
 
 ================================================================================
 Tag with name and HTML-style attributes
@@ -88,7 +88,7 @@ Tag with name and HTML-style attributes
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (attributes
       (html_attributes
         (attribute
@@ -114,7 +114,7 @@ Tag with text
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (text_content)))
 
 ================================================================================
@@ -128,7 +128,7 @@ Tag with nested text
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (text_content)))
 
 ================================================================================
@@ -142,7 +142,7 @@ Tag with nested Ruby output block
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (ruby_block_output
         (ruby_code))))
 
@@ -158,9 +158,9 @@ Tag with nested Ruby evaluate block
 
 (source_file
   (tag
-    (name)
+    (tag_name)
     (ruby_block_run
       (ruby_code)
       (tag
-        (name)
+        (tag_name)
         (text_content)))))
