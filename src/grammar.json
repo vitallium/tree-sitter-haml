@@ -9,6 +9,10 @@
         "members": [
           {
             "type": "SYMBOL",
+            "name": "doctype"
+          },
+          {
+            "type": "SYMBOL",
             "name": "tag"
           },
           {
@@ -29,6 +33,19 @@
           }
         ]
       }
+    },
+    "doctype": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "!!!"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_text"
+        }
+      ]
     },
     "tag": {
       "type": "SEQ",

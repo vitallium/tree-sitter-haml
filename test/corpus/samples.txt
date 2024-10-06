@@ -62,3 +62,73 @@ Nav
           (ruby_code)))
       (ruby_block_output
         (ruby_code)))))
+
+================================================================================
+app/views/layouts/application.html.haml
+================================================================================
+
+- page_classes = page_class << @html_class
+- page_classes = [user_application_color_mode, user_application_theme, page_classes.flatten.compact]
+- body_classes = [user_tab_width, @body_class, client_class_list, *custom_diff_color_classes]
+
+!!! 5
+%html{ lang: I18n.locale, class: page_classes }
+  = render "layouts/head"
+  %body{ class: body_classes, data: body_data }
+    = render "layouts/init_auto_complete" if @gfm_form
+    = render "layouts/init_client_detection_flags"
+    = render 'peek/bar'
+    = header_message
+
+    - if !current_user
+      = render partial: "layouts/header/super_sidebar_logged_out"
+    = render 'layouts/page', sidebar: sidebar, nav: nav
+    = footer_message
+
+    = render 'layouts/img_loader'
+
+    = render 'layouts/published_experiments'
+    = yield :scripts_body
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ruby_block_run
+    (ruby_code))
+  (ruby_block_run
+    (ruby_code))
+  (ruby_block_run
+    (ruby_code))
+  (doctype)
+  (tag
+    (tag_name)
+    (attributes
+      (ruby_attributes))
+    (ruby_block_output
+      (ruby_code))
+    (tag
+      (tag_name)
+      (attributes
+        (ruby_attributes))
+      (ruby_block_output
+        (ruby_code))
+      (ruby_block_output
+        (ruby_code))
+      (ruby_block_output
+        (ruby_code))
+      (ruby_block_output
+        (ruby_code))
+      (ruby_block_run
+        (ruby_code)
+        (ruby_block_output
+          (ruby_code)))
+      (ruby_block_output
+        (ruby_code))
+      (ruby_block_output
+        (ruby_code))
+      (ruby_block_output
+        (ruby_code))
+      (ruby_block_output
+        (ruby_code))
+      (ruby_block_output
+        (ruby_code)))))

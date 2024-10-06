@@ -73,6 +73,11 @@
     "fields": {}
   },
   {
+    "type": "doctype",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "html_attributes",
     "named": true,
     "fields": {},
@@ -209,6 +214,10 @@
           "named": true
         },
         {
+          "type": "doctype",
+          "named": true
+        },
+        {
           "type": "ruby_block_output",
           "named": true
         },
@@ -284,6 +293,10 @@
   },
   {
     "type": " ",
+    "named": false
+  },
+  {
+    "type": "!!!",
     "named": false
   },
   {

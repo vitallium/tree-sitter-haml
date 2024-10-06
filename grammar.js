@@ -8,6 +8,7 @@ module.exports = grammar({
     source_file: ($) =>
       repeat(
         choice(
+          $.doctype,
           $.tag,
           $.comment,
           $.ruby_block_output,
@@ -15,6 +16,7 @@ module.exports = grammar({
           $.ruby_interpolation,
         ),
       ),
+    doctype: ($) => seq("!!!", $._text),
     tag: ($) =>
       seq(
         choice($.tag_name, $.id, $.class),
