@@ -40,10 +40,7 @@
   "tree-sitter": [
     {
       "scope": "source.haml",
-      "injection-regex": "^haml$",
-      "file-types": [
-        "haml"
-      ]
+      "injection-regex": "^haml$"
     }
   ]
 }
