@@ -164,3 +164,21 @@ Tag with nested Ruby evaluate block
       (tag
         (tag_name)
         (text_content)))))
+
+================================================================================
+Unescaping HTML
+================================================================================
+
+= "I feel <strong>!"
+!= "I feel <strong>!"
+%foo
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ruby_block_output
+    (ruby_code))
+  (ruby_block_output
+    (ruby_code))
+  (tag
+    (tag_name)))
