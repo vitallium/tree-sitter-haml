@@ -124,3 +124,18 @@ Simple conditional
       (name)
       (ruby_block_output
         (ruby_code)))))
+
+================================================================================
+Ruby code stretched over multiple lines
+:skip
+================================================================================
+
+= link_to_remote "Add to cart",
+    :url => { :action => "add", :id => product.id },
+    :update => { :success => "cart", :failure => "error" }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ruby_block_output
+    (ruby_code)))
