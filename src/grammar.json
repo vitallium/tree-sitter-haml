@@ -30,6 +30,10 @@
           {
             "type": "SYMBOL",
             "name": "ruby_interpolation"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "filter"
           }
         ]
       }
@@ -219,6 +223,10 @@
         {
           "type": "SYMBOL",
           "name": "ruby_interpolation"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "filter"
         },
         {
           "type": "SYMBOL",
@@ -689,6 +697,73 @@
     "_html_identifier": {
       "type": "PATTERN",
       "value": "[-:\\w/.]+"
+    },
+    "filter": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": ":"
+        },
+        {
+          "type": "ALIAS",
+          "content": {
+            "type": "SYMBOL",
+            "name": "_text"
+          },
+          "named": true,
+          "value": "filter_name"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "filter_body"
+        }
+      ]
+    },
+    "filter_body": {
+      "type": "PREC_RIGHT",
+      "value": 0,
+      "content": {
+        "type": "SEQ",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "_newline"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "_indent"
+          },
+          {
+            "type": "REPEAT",
+            "content": {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_text"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "_newline"
+                }
+              ]
+            }
+          },
+          {
+            "type": "CHOICE",
+            "members": [
+              {
+                "type": "SYMBOL",
+                "name": "_dedent"
+              },
+              {
+                "type": "BLANK"
+              }
+            ]
+          }
+        ]
+      }
     }
   },
   "extras": [

@@ -1,0 +1,47 @@
+================================================================================
+Filters
+================================================================================
+
+:javascript
+  alert('Hello world!')
+%foo
+:css
+  .foo { color: red; }
+%foo
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (filter
+    (filter_name)
+    (filter_body))
+  (tag
+    (tag_name))
+  (filter
+    (filter_name)
+    (filter_body))
+  (tag
+    (tag_name)))
+
+================================================================================
+Nested filters
+================================================================================
+
+- flavor = "raspberry"
+#content
+  :textile
+    I *really* prefer _#{flavor}_ jam.
+%foo
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ruby_block_run
+    (ruby_code))
+  (tag
+    (id)
+    (filter
+      (filter_name)
+      (filter_body)))
+  (tag
+    (tag_name)))

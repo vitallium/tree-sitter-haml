@@ -14,6 +14,7 @@ module.exports = grammar({
           $.ruby_block_output,
           $.ruby_block_run,
           $.ruby_interpolation,
+          $.filter,
         ),
       ),
     doctype: ($) => seq("!!!", $._text),
@@ -39,6 +40,7 @@ module.exports = grammar({
         $.ruby_block_output,
         $.ruby_block_run,
         $.ruby_interpolation,
+        $.filter,
         $.text_content,
         $.comment,
       ),
@@ -103,5 +105,15 @@ module.exports = grammar({
     ruby_interpolation: ($) => seq("#", $.ruby_expression),
     ruby_expression: () => /\{[^}]*\}/,
     _html_identifier: () => /[-:\w/.]+/,
+    filter: ($) => seq(":", alias($._text, $.filter_name), $.filter_body),
+    filter_body: ($) =>
+      prec.right(
+        seq(
+          $._newline,
+          $._indent,
+          repeat(seq($._text, $._newline)),
+          optional($._dedent),
+        ),
+      ),
   },
 });

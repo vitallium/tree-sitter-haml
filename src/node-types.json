@@ -78,6 +78,30 @@
     "fields": {}
   },
   {
+    "type": "filter",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "filter_body",
+          "named": true
+        },
+        {
+          "type": "filter_name",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "filter_body",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "html_attributes",
     "named": true,
     "fields": {},
@@ -120,6 +144,10 @@
           "named": true
         },
         {
+          "type": "filter",
+          "named": true
+        },
+        {
           "type": "ruby_block_output",
           "named": true
         },
@@ -156,6 +184,10 @@
       "types": [
         {
           "type": "comment",
+          "named": true
+        },
+        {
+          "type": "filter",
           "named": true
         },
         {
@@ -218,6 +250,10 @@
           "named": true
         },
         {
+          "type": "filter",
+          "named": true
+        },
+        {
           "type": "ruby_block_output",
           "named": true
         },
@@ -254,6 +290,10 @@
         },
         {
           "type": "comment",
+          "named": true
+        },
+        {
+          "type": "filter",
           "named": true
         },
         {
@@ -336,6 +376,10 @@
     "named": false
   },
   {
+    "type": ":",
+    "named": false
+  },
+  {
     "type": "=",
     "named": false
   },
@@ -357,6 +401,10 @@
   },
   {
     "type": "class_name",
+    "named": true
+  },
+  {
+    "type": "filter_name",
     "named": true
   },
   {
