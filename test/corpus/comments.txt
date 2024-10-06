@@ -40,7 +40,6 @@ Conditional comment
 /[if IE]
   %a{ :href => 'http://www.mozilla.com/en-US/firefox/' }
     %h1 Get Firefox
-
 %h1
 
 --------------------------------------------------------------------------------
@@ -49,3 +48,44 @@ Conditional comment
   (comment)
   (tag
     (name)))
+
+================================================================================
+HAML single-line comment
+================================================================================
+
+%p foo
+-# This is a comment
+%p bar
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (name)
+    (text_content))
+  (comment)
+  (tag
+    (name)
+    (text_content)))
+
+================================================================================
+HAML multi-line comment
+================================================================================
+
+%p foo
+-#
+  This won't be displayed
+    Nor will this
+                   Nor will this.
+%p bar
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (name)
+    (text_content))
+  (comment)
+  (tag
+    (name)
+    (text_content)))

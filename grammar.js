@@ -53,7 +53,7 @@ module.exports = grammar({
     // HTML Comments starts with /
     _comment_line: ($) =>
       seq(
-        "/",
+        choice("/", "-#"),
         $._comment_content,
         $._newline,
         optional(
@@ -66,7 +66,7 @@ module.exports = grammar({
       ),
     _comment_block: ($) =>
       seq(
-        "/",
+        choice("/", "-#"),
         optional($.comment_condition),
         $._newline,
         $._indent,
