@@ -1,5 +1,7 @@
+# Generate the parser
 generate:
     @npx tree-sitter generate
 
-test: generate
-    @npx tree-sitter test
+# Run the tests
+test *ARGS: generate
+    @npx tree-sitter test {{ARGS}}
