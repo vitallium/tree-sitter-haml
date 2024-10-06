@@ -89,3 +89,23 @@ HAML multi-line comment
   (tag
     (name)
     (text_content)))
+
+================================================================================
+HAML multi-line comment v2
+================================================================================
+
+= form_for(@resource) do |f|
+  = hidden_field_tag :client_id, @pre_auth.client.uid
+  -#= hidden_field_tag :redirect_uri, @pre_auth.redirect_uri
+  = hidden_field_tag :state, @pre_auth.state
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ruby_block_output
+    (ruby_code)
+    (ruby_block_output
+      (ruby_code))
+    (comment)
+    (ruby_block_output
+      (ruby_code))))

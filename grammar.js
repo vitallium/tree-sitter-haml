@@ -86,7 +86,12 @@ module.exports = grammar({
     _text: () => /[^\n]+/,
     _comment_content: () => /[^\n]*/,
     text_content: ($) => token(prec(-1, /[^\n]+/)),
-    ruby_block_output: ($) => seq("=", alias($._text, $.ruby_code)),
+    ruby_block_output: ($) =>
+      seq(
+        "=",
+        alias($._text, $.ruby_code),
+        optional(seq($._newline, optional($._children))),
+      ),
     ruby_block_run: ($) =>
       seq(
         "-",
