@@ -3,8 +3,8 @@ package tree_sitter_haml_test
 import (
 	"testing"
 
-	tree_sitter "github.com/smacker/go-tree-sitter"
-	"github.com/tree-sitter/tree-sitter-haml"
+	tree_sitter "github.com/tree-sitter/go-tree-sitter"
+	tree_sitter_haml "github.com/tree-sitter/tree-sitter-haml/bindings/go"
 )
 
 func TestCanLoadGrammar(t *testing.T) {
