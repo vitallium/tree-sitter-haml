@@ -132,3 +132,39 @@ app/views/layouts/application.html.haml
         (ruby_code))
       (ruby_block_output
         (ruby_code)))))
+
+================================================================================
+app/views/dashboard/merge_requests.html.haml
+:skip
+================================================================================
+
+- if merge_request_dashboard_enabled?(current_user)
+  #js-merge-request-dashboard{ data: { initial_data: merge_request_dashboard_data(current_user).to_json } }
+    = render ::Layouts::PageHeadingComponent.new(_('Merge requests'))
+    = gl_loading_icon(size: 'lg')
+
+- else
+  = render 'dashboard/empty_state', message: _('Merge requests are disabled for this project.')
+--------------------------------------------------------------------------------
+
+(source_file
+  ;; - if merge_request_dashboard_enabled?(current_user)
+  (ruby_block_run
+    (ruby_code)
+    ;; #js-merge-request-dashboard
+    (tag
+      (id)
+      (attributes
+        (ruby_attributes))
+      ;; = render ::Layouts::PageHeadingComponent.new(_('Merge requests'))
+      (ruby_block_output
+        (ruby_code))
+      ;; = gl_loading_icon(size: 'lg')
+      (ruby_block_output
+        (ruby_code))))
+  ;; - else
+  (ruby_block_run
+    (ruby_code)
+    ;; = render 'dashboard/empty_state', message: _('Merge requests are disabled for this project.')
+    (ruby_block_output
+      (ruby_code))))
