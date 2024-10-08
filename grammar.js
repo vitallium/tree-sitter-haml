@@ -84,8 +84,26 @@ module.exports = grammar({
       seq($.attribute_name, optional(seq("=", $.quoted_attribute_value))),
     quoted_attribute_value: ($) =>
       choice(
-        seq("'", optional(alias($._html_identifier, $.attribute_value)), "'"),
-        seq('"', optional(alias($._html_identifier, $.attribute_value)), '"'),
+        seq(
+          "'",
+          repeat1(
+            choice(
+              $.ruby_interpolation,
+              alias($._html_identifier, $.attribute_value),
+            ),
+          ),
+          "'",
+        ),
+        seq(
+          '"',
+          repeat1(
+            choice(
+              $.ruby_interpolation,
+              alias($._html_identifier, $.attribute_value),
+            ),
+          ),
+          '"',
+        ),
       ),
     _text: () => /[^\n]+/,
     _comment_content: () => /[^\n]*/,

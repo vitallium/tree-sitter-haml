@@ -182,3 +182,49 @@ Unescaping HTML
     (ruby_code))
   (tag
     (tag_name)))
+
+================================================================================
+Attribute hashes that are stretched over multiple lines
+================================================================================
+
+%script{
+  "type": text/javascript",
+  "src": javascripts/script_#{2 + 7}",
+  "data": {
+    "controller": "reporter",
+  },
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (attributes
+      (ruby_attributes))))
+
+================================================================================
+HTML-like attributes that are stretched over multiple lines
+================================================================================
+
+%script(type="text/javascript"
+        src="javascripts/script_#{2 + 7}_fix")
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (attributes
+      (html_attributes
+        (attribute
+          (attribute_name)
+          (quoted_attribute_value
+            (attribute_value)))
+        (attribute
+          (attribute_name)
+          (quoted_attribute_value
+            (attribute_value)
+            (ruby_interpolation
+              (ruby_expression))
+            (attribute_value)))))))

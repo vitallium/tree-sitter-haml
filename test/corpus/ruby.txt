@@ -139,3 +139,23 @@ Ruby code stretched over multiple lines
 (source_file
   (ruby_block_output
     (ruby_code)))
+
+================================================================================
+HTML-like attributes with Ruby interpolation inside
+================================================================================
+
+%span(class="widget_#{@widget.number}")
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (attributes
+      (html_attributes
+        (attribute
+          (attribute_name)
+          (quoted_attribute_value
+            (attribute_value)
+            (ruby_interpolation
+              (ruby_expression))))))))
