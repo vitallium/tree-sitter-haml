@@ -47,12 +47,14 @@ module.exports = grammar({
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
     attributes: ($) => choice($.html_attributes, $.ruby_attributes),
-    // Starts with #
-    id: () => /#[\w-]+/,
     // Starts with %
-    tag_name: () => /%([-:\w]+)/,
-    // Starts with . (dot)
-    class_name: () => /[_a-z0-9\-]*[_a-zA-Z][_a-zA-Z0-9\-]*/i,
+    tag_name: () => /%[-:\w]+/,
+    class_or_id_value: () => /[-:_a-zA-Z0-9\@]+/,
+    // Starts with #
+    id: ($) => seq("#", alias($.class_or_id_value, "id")),
+    // Starts with `.` (dot)
+    class: ($) => seq(".", $.class_name),
+    class_name: () => /[-:_a-zA-Z0-9\@]+/,
     comment: ($) => choice($._comment_line, $._comment_block),
     // HTML Comments starts with /
     _comment_line: ($) =>
@@ -78,7 +80,6 @@ module.exports = grammar({
         $._dedent,
       ),
     comment_condition: ($) => seq("[", $._text, "]"),
-    class: ($) => seq(".", $.class_name),
     attribute_name: () => /#?[\w@\-:]+/,
     attribute: ($) =>
       seq($.attribute_name, optional(seq("=", $.quoted_attribute_value))),

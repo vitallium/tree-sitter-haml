@@ -168,3 +168,24 @@ app/views/dashboard/merge_requests.html.haml
     ;; = render 'dashboard/empty_state', message: _('Merge requests are disabled for this project.')
     (ruby_block_output
       (ruby_code))))
+
+================================================================================
+Tailwind case #1
+================================================================================
+
+.mx-2.sm:mx-5.from-black@75
+  %p Some text
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (class
+      (class_name))
+    (class
+      (class_name))
+    (class
+      (class_name))
+    (tag
+      (tag_name)
+      (text_content))))
