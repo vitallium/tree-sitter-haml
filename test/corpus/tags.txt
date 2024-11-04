@@ -188,8 +188,8 @@ Attribute hashes that are stretched over multiple lines
 ================================================================================
 
 %script{
-  "type": text/javascript",
-  "src": javascripts/script_#{2 + 7}",
+  "type": "text/javascript",
+  "src": "javascripts/script_#{2 + 7}",
   "data": {
     "controller": "reporter",
   },
