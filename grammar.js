@@ -131,8 +131,8 @@ module.exports = grammar({
         seq(
           $._newline,
           $._indent,
-          repeat(seq($._text, $._newline)),
-          optional($._dedent),
+          repeat1(seq($._text, $._newline)),
+          choice($._newline, $._dedent),
         ),
       ),
   },

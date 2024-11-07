@@ -772,7 +772,7 @@
             "name": "_indent"
           },
           {
-            "type": "REPEAT",
+            "type": "REPEAT1",
             "content": {
               "type": "SEQ",
               "members": [
@@ -792,10 +792,11 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "_dedent"
+                "name": "_newline"
               },
               {
-                "type": "BLANK"
+                "type": "SYMBOL",
+                "name": "_dedent"
               }
             ]
           }

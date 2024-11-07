@@ -45,3 +45,22 @@ Nested filters
       (filter_body)))
   (tag
     (tag_name)))
+
+================================================================================
+Filter with the blank line after
+================================================================================
+
+:css
+  body { padding: 0; }
+
+- other_ruby_code
+
+--------------------------------------------------------------------------------
+
+
+(source_file
+  (filter
+    (filter_name)
+    (filter_body))
+  (ruby_block_run
+    (ruby_code)))
