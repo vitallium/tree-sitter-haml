@@ -6,7 +6,7 @@ module.exports = grammar({
   externals: ($) => [$._newline, $._indent, $._dedent, $.ruby_attributes],
   rules: {
     source_file: ($) =>
-      repeat(
+      repeat1(
         choice(
           $.doctype,
           $.tag,
