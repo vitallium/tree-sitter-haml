@@ -3,7 +3,7 @@
   "name": "haml",
   "rules": {
     "source_file": {
-      "type": "REPEAT1",
+      "type": "REPEAT",
       "content": {
         "type": "CHOICE",
         "members": [
