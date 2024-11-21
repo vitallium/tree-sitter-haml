@@ -30,3 +30,24 @@ Nesting with three tags
       (tag_name)
       (tag
         (tag_name)))))
+
+================================================================================
+Doctype with nested tags
+================================================================================
+
+!!!
+%html.gl-h-full{ lang: 'en' }
+  %head
+
+---
+
+(source_file
+  (doctype)
+  (tag
+    (tag_name)
+    (class
+      (class_name))
+    (attributes
+      (ruby_attributes))
+    (tag
+      (tag_name))))

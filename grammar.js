@@ -106,7 +106,7 @@ module.exports = grammar({
           '"',
         ),
       ),
-    _text: () => /[^\n]+/,
+    _text: () => /[^\n]*/,
     _comment_content: () => /[^\n]*/,
     text_content: ($) => token(prec(-1, /[^\n]+/)),
     ruby_block_output: ($) =>
