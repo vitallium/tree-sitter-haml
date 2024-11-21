@@ -792,11 +792,10 @@
             "members": [
               {
                 "type": "SYMBOL",
-                "name": "_newline"
+                "name": "_dedent"
               },
               {
-                "type": "SYMBOL",
-                "name": "_dedent"
+                "type": "BLANK"
               }
             ]
           }

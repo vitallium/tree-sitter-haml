@@ -64,3 +64,30 @@ Filter with the blank line after
     (filter_body))
   (ruby_block_run
     (ruby_code)))
+
+================================================================================
+Filter should not be greedy
+================================================================================
+
+= javascript_tag nonce: true do
+  :javascript
+    const { namespace: sp_namespace, hostname: sp_hostname, ...snowplowOptions } = #{raw(Gitlab::Tracking.snowplow_options.to_json)};
+
+    window.snowplow('newTracker',
+      sp_namespace,
+      sp_hostname,
+      snowplowOptions
+    );
+
+    window.snowplow('flushBuffer');
+
+    window.snowplowContext = {}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (ruby_block_output
+    (ruby_code)
+    (filter
+      (filter_name)
+      (filter_body))))
