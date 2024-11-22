@@ -5,9 +5,7 @@
       "camelcase": "Haml",
       "scope": "source.haml",
       "path": ".",
-      "file-types": [
-        "haml"
-      ],
+      "file-types": ["haml"],
       "injection-regex": "^haml$"
     }
   ],
@@ -22,7 +20,7 @@
       }
     ],
     "links": {
-      "repository": "https://github.com/tree-sitter/tree-sitter-haml"
+      "repository": "https://github.com/vitallium/tree-sitter-haml"
     }
   },
   "bindings": {
