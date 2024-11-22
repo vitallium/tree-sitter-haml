@@ -107,11 +107,6 @@
     "fields": {}
   },
   {
-    "type": "filter_name",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "html_attributes",
     "named": true,
     "fields": {},
@@ -235,11 +230,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "ruby_code",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "ruby_interpolation",
@@ -428,7 +418,15 @@
     "named": true
   },
   {
+    "type": "filter_name",
+    "named": true
+  },
+  {
     "type": "ruby_attributes",
+    "named": true
+  },
+  {
+    "type": "ruby_code",
     "named": true
   },
   {

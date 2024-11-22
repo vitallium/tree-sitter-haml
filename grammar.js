@@ -60,15 +60,9 @@ module.exports = grammar({
     _comment_line: ($) =>
       seq(
         choice("/", "-#"),
-        $._comment_content,
+        $._text,
         $._newline,
-        optional(
-          seq(
-            $._indent,
-            repeat1(seq($._comment_content, $._newline)),
-            $._dedent,
-          ),
-        ),
+        optional(seq($._indent, repeat1(seq($._text, $._newline)), $._dedent)),
       ),
     _comment_block: ($) =>
       seq(
@@ -76,7 +70,7 @@ module.exports = grammar({
         optional($.comment_condition),
         $._newline,
         $._indent,
-        repeat1(seq($._comment_content, $._newline)),
+        repeat1(seq($._text, $._newline)),
         $._dedent,
       ),
     comment_condition: ($) => seq("[", $._text, "]"),
@@ -107,7 +101,6 @@ module.exports = grammar({
         ),
       ),
     _text: () => /[^\n]*/,
-    _comment_content: () => /[^\n]*/,
     text_content: ($) => token(prec(-1, /[^\n]+/)),
     ruby_block_output: ($) =>
       seq(
