@@ -182,7 +182,7 @@
           "named": true
         },
         {
-          "type": "text_content",
+          "type": "verbatim_string",
           "named": true
         }
       ]
@@ -225,7 +225,7 @@
           "named": true
         },
         {
-          "type": "text_content",
+          "type": "verbatim_string",
           "named": true
         }
       ]
@@ -339,7 +339,7 @@
           "named": true
         },
         {
-          "type": "text_content",
+          "type": "verbatim_string",
           "named": true
         }
       ]
@@ -442,7 +442,7 @@
     "named": true
   },
   {
-    "type": "text_content",
+    "type": "verbatim_string",
     "named": true
   }
 ]

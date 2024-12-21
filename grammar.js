@@ -26,7 +26,7 @@ module.exports = grammar({
         optional(alias("/", $.self_close_slash)),
         choice(
           $.ruby_block_output,
-          seq(" ", $.text_content),
+          seq(" ", $.verbatim_string),
           seq($._newline, optional($._children)),
         ),
       ),
@@ -41,8 +41,9 @@ module.exports = grammar({
         $.ruby_block_run,
         $.ruby_interpolation,
         $.filter,
-        $.text_content,
+        $.verbatim_string,
         $.comment,
+        $._newline,
       ),
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
@@ -101,30 +102,35 @@ module.exports = grammar({
         ),
       ),
     _text: () => /[^\n]*/,
-    text_content: ($) => token(prec(-1, /[^\n]+/)),
+    verbatim_string: ($) => token(prec(-1, /[^\n]+/)),
     ruby_block_output: ($) =>
       seq(
         optional("!"),
         "=",
         alias($._text, $.ruby_code),
-        optional(seq($._newline, optional($._children))),
+        seq($._newline, optional($._children)),
       ),
     ruby_block_run: ($) =>
       seq(
         "-",
         alias($._text, $.ruby_code),
-        optional(seq($._newline, optional($._children))),
+        seq($._newline, optional($._children)),
       ),
     ruby_interpolation: ($) => seq("#", $.ruby_expression),
     ruby_expression: () => /\{[^}]*\}/,
     _html_identifier: () => /[-:\w/.]+/,
-    filter: ($) => seq(":", alias($._text, $.filter_name), $.filter_body),
+    filter: ($) =>
+      seq(
+        ":",
+        alias($._text, $.filter_name),
+        $._newline,
+        optional($.filter_body),
+      ),
     filter_body: ($) =>
       prec.right(
         seq(
-          $._newline,
           $._indent,
-          repeat1(seq($._text, $._newline)),
+          repeat1(choice(seq($._text, $._newline), $._newline)),
           optional($._dedent),
         ),
       ),

@@ -35,7 +35,7 @@ app/views/events/_event.html.haml
           (ruby_code)
           (tag
             (tag_name)
-            (text_content))
+            (verbatim_string))
           (ruby_block_output
             (ruby_code)))))))
 
@@ -135,7 +135,6 @@ app/views/layouts/application.html.haml
 
 ================================================================================
 app/views/dashboard/merge_requests.html.haml
-:skip
 ================================================================================
 
 - if merge_request_dashboard_enabled?(current_user)
@@ -145,6 +144,7 @@ app/views/dashboard/merge_requests.html.haml
 
 - else
   = render 'dashboard/empty_state', message: _('Merge requests are disabled for this project.')
+
 --------------------------------------------------------------------------------
 
 (source_file
@@ -188,11 +188,10 @@ Tailwind case #1
       (class_name))
     (tag
       (tag_name)
-      (text_content))))
+      (verbatim_string))))
 
 ================================================================================
 Greedy new line
-:skip
 ================================================================================
 
 #container

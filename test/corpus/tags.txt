@@ -115,7 +115,7 @@ Tag with text
 (source_file
   (tag
     (tag_name)
-    (text_content)))
+    (verbatim_string)))
 
 ================================================================================
 Tag with nested text
@@ -129,7 +129,7 @@ Tag with nested text
 (source_file
   (tag
     (tag_name)
-    (text_content)))
+    (verbatim_string)))
 
 ================================================================================
 Tag with nested Ruby output block
@@ -163,7 +163,7 @@ Tag with nested Ruby evaluate block
       (ruby_code)
       (tag
         (tag_name)
-        (text_content)))))
+        (verbatim_string)))))
 
 ================================================================================
 Unescaping HTML
