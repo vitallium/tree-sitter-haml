@@ -1,0 +1,8 @@
+[tools]
+node = "22.12.0"
+
+[tasks]
+generate = { description = "Generate the parser", run = "npx tree-sitter generate" }
+test = { description = "Run the tests", depends = [
+  "generate",
+], run = "npx tree-sitter test $@" }
