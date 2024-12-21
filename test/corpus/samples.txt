@@ -189,3 +189,31 @@ Tailwind case #1
     (tag
       (tag_name)
       (text_content))))
+
+================================================================================
+Greedy new line
+:skip
+================================================================================
+
+#container
+  %input
+
+:javascript
+  document.addEventListener("DOMContentLoaded", function() {
+    const input = document.querySelector('input');
+
+    input.addEventListener('click', function() {
+      alert("You clicked on: " + this);
+    });
+  });
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (id)
+    (tag
+      (tag_name)))
+  (filter
+    (filter_name)
+    (filter_body)))
