@@ -1,5 +1,5 @@
 [tools]
-node = "22.12.0"
+node = "lts"
 
 [tasks]
 generate = { description = "Generate the parser", run = "npx tree-sitter generate" }
