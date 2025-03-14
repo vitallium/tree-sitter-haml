@@ -5,7 +5,7 @@
       "camelcase": "Haml",
       "scope": "source.haml",
       "path": ".",
-      "file-types": ["haml"],
+      "file-types": ["html.haml", "haml"],
       "injection-regex": "^haml$"
     }
   ],
