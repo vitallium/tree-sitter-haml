@@ -25,7 +25,7 @@ let package = Package(
             cSettings: [.headerSearchPath("src")]
         ),
         .testTarget(
-            name: "TreeSitterRubyTests",
+            name: "TreeSitterHamlTests",
             dependencies: [
                 "SwiftTreeSitter",
                 "TreeSitterHaml",

@@ -1,10 +1,10 @@
 {
   "name": "tree-sitter-haml",
   "version": "0.0.4",
-  "main": "index.js",
   "author": "Vitaly Slobodin <vitaliy.slobodin@gmail.com>",
   "license": "MIT",
   "description": "HAML grammar for tree-sitter",
+  "main": "bindings/node",
   "types": "bindings/node",
   "scripts": {
     "install": "node-gyp-build",
@@ -26,11 +26,12 @@
     }
   },
   "devDependencies": {
-    "tree-sitter-cli": "0.25.3",
+    "tree-sitter-cli": "0.24.7",
     "prebuildify": "6.0.1"
   },
   "files": [
     "grammar.js",
+    "tree-sitter.json",
     "binding.gyp",
     "prebuilds/**",
     "bindings/node/*",
