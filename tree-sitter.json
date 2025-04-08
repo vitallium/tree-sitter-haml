@@ -6,7 +6,9 @@
       "scope": "source.haml",
       "path": ".",
       "file-types": ["haml"],
-      "injection-regex": "^haml$"
+      "injection-regex": "^haml$",
+      "highlights": ["queries/highlights.scm"],
+      "injections": ["queries/injections.scm"]
     }
   ],
   "metadata": {
