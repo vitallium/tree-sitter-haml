@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-haml",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "main": "index.js",
   "author": "Vitaly Slobodin <vitaliy.slobodin@gmail.com>",
   "license": "MIT",
