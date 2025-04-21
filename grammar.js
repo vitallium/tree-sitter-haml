@@ -77,7 +77,7 @@ module.exports = grammar({
     comment_condition: ($) => seq("[", $._text, "]"),
     attribute_name: () => /#?[\w@\-:]+/,
     attribute: ($) =>
-      seq($.attribute_name, optional(seq("=", $.quoted_attribute_value))),
+      seq($.attribute_name, optional(seq("=", choice($.quoted_attribute_value, $.ruby_value_ref)))),
     quoted_attribute_value: ($) =>
       choice(
         seq(
@@ -118,6 +118,18 @@ module.exports = grammar({
       ),
     ruby_interpolation: ($) => seq("#", $.ruby_expression),
     ruby_expression: () => /\{[^}]*\}/,
+    ruby_class_variable: () => seq("@@", /[a-zA-Z0-9_]+/),
+    ruby_instance_variable: () => seq("@", /[_a-zA-Z0-9]+/),
+    ruby_global_variable: () => seq("$", /[a-zA-Z0-9_]+/),
+    ruby_constant: () => /[A-Z][a-zA-Z0-9_]+/,
+    ruby_local_variable: () => /[a-z_][a-zA-Z0-9_]+/,
+    ruby_value_ref: ($) => choice(
+      $.ruby_local_variable,
+      $.ruby_class_variable,
+      $.ruby_instance_variable,
+      $.ruby_global_variable,
+      $.ruby_constant
+    ),
     _html_identifier: () => /[-:\w/.]+/,
     filter: ($) =>
       seq(

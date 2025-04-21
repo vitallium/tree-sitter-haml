@@ -228,3 +228,37 @@ HTML-like attributes that are stretched over multiple lines
             (ruby_interpolation
               (ruby_expression))
             (attribute_value)))))))
+
+================================================================================
+HTML-like attributes with ruby value references
+================================================================================
+
+%input(foo=lvar bar=$gvar baz=@ivar waz=@@cvar lol=CONSTANT)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (attributes
+      (html_attributes
+        (attribute
+          (attribute_name)
+          (ruby_value
+            (ruby_local_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value
+            (ruby_global_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value
+            (ruby_instance_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value
+            (ruby_class_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value
+            (ruby_constant)))))))
