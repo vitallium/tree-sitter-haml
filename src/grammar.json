@@ -280,17 +280,20 @@
       ]
     },
     "attributes": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "html_attributes"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "ruby_attributes"
-        }
-      ]
+      "type": "REPEAT1",
+      "content": {
+        "type": "CHOICE",
+        "members": [
+          {
+            "type": "SYMBOL",
+            "name": "html_attributes"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "ruby_attributes"
+          }
+        ]
+      }
     },
     "tag_name": {
       "type": "PATTERN",
@@ -508,8 +511,17 @@
                   "value": "="
                 },
                 {
-                  "type": "SYMBOL",
-                  "name": "quoted_attribute_value"
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "quoted_attribute_value"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "ruby_value_ref"
+                    }
+                  ]
                 }
               ]
             },
@@ -715,6 +727,78 @@
       "type": "PATTERN",
       "value": "\\{[^}]*\\}"
     },
+    "ruby_class_variable": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "@@"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[a-zA-Z0-9_]+"
+        }
+      ]
+    },
+    "ruby_instance_variable": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "@"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[_a-zA-Z0-9]+"
+        }
+      ]
+    },
+    "ruby_global_variable": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "$"
+        },
+        {
+          "type": "PATTERN",
+          "value": "[a-zA-Z0-9_]+"
+        }
+      ]
+    },
+    "ruby_constant": {
+      "type": "PATTERN",
+      "value": "[A-Z][a-zA-Z0-9_]+"
+    },
+    "ruby_local_variable": {
+      "type": "PATTERN",
+      "value": "[a-z_][a-zA-Z0-9_]+"
+    },
+    "ruby_value_ref": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "ruby_local_variable"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ruby_class_variable"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ruby_instance_variable"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ruby_global_variable"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ruby_constant"
+        }
+      ]
+    },
     "_html_identifier": {
       "type": "PATTERN",
       "value": "[-:\\w/.]+"
@@ -831,5 +915,6 @@
     }
   ],
   "inline": [],
-  "supertypes": []
+  "supertypes": [],
+  "reserved": {}
 }

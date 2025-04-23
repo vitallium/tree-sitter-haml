@@ -47,7 +47,7 @@ module.exports = grammar({
       ),
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
-    attributes: ($) => choice($.html_attributes, $.ruby_attributes),
+    attributes: ($) => repeat1(choice($.html_attributes, $.ruby_attributes)),
     // Starts with %
     tag_name: () => /%[-:\w]+/,
     class_or_id_value: () => /[-:_a-zA-Z0-9\@]+/,

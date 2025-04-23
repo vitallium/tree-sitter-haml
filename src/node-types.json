@@ -14,6 +14,10 @@
         {
           "type": "quoted_attribute_value",
           "named": true
+        },
+        {
+          "type": "ruby_value_ref",
+          "named": true
         }
       ]
     }
@@ -23,7 +27,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
         {
@@ -232,6 +236,21 @@
     }
   },
   {
+    "type": "ruby_class_variable",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "ruby_global_variable",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "ruby_instance_variable",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "ruby_interpolation",
     "named": true,
     "fields": {},
@@ -241,6 +260,37 @@
       "types": [
         {
           "type": "ruby_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ruby_value_ref",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "ruby_class_variable",
+          "named": true
+        },
+        {
+          "type": "ruby_constant",
+          "named": true
+        },
+        {
+          "type": "ruby_global_variable",
+          "named": true
+        },
+        {
+          "type": "ruby_instance_variable",
+          "named": true
+        },
+        {
+          "type": "ruby_local_variable",
           "named": true
         }
       ]
@@ -366,6 +416,10 @@
     "named": false
   },
   {
+    "type": "$",
+    "named": false
+  },
+  {
     "type": "'",
     "named": false
   },
@@ -402,6 +456,14 @@
     "named": false
   },
   {
+    "type": "@",
+    "named": false
+  },
+  {
+    "type": "@@",
+    "named": false
+  },
+  {
     "type": "[",
     "named": false
   },
@@ -430,7 +492,15 @@
     "named": true
   },
   {
+    "type": "ruby_constant",
+    "named": true
+  },
+  {
     "type": "ruby_expression",
+    "named": true
+  },
+  {
+    "type": "ruby_local_variable",
     "named": true
   },
   {
