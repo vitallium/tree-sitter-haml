@@ -55,7 +55,7 @@ Nav
     (id)
     (tag
       (class
-       (class_name))
+        (class_name))
       (tag
         (tag_name)
         (ruby_block_output
@@ -148,24 +148,18 @@ app/views/dashboard/merge_requests.html.haml
 --------------------------------------------------------------------------------
 
 (source_file
-  ;; - if merge_request_dashboard_enabled?(current_user)
   (ruby_block_run
     (ruby_code)
-    ;; #js-merge-request-dashboard
     (tag
       (id)
       (attributes
         (ruby_attributes))
-      ;; = render ::Layouts::PageHeadingComponent.new(_('Merge requests'))
       (ruby_block_output
         (ruby_code))
-      ;; = gl_loading_icon(size: 'lg')
       (ruby_block_output
         (ruby_code))))
-  ;; - else
   (ruby_block_run
     (ruby_code)
-    ;; = render 'dashboard/empty_state', message: _('Merge requests are disabled for this project.')
     (ruby_block_output
       (ruby_code))))
 

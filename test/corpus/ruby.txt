@@ -159,3 +159,74 @@ HTML-like attributes with Ruby interpolation inside
             (attribute_value)
             (ruby_interpolation
               (ruby_expression))))))))
+
+================================================================================
+HTML-like attributes with Ruby value references
+================================================================================
+
+%input(foo=lvar bar=$gvar baz=@ivar waz=@@cvar lol=CONSTANT)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (attributes
+      (html_attributes
+        (attribute
+          (attribute_name)
+          (ruby_value_ref
+            (ruby_local_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value_ref
+            (ruby_global_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value_ref
+            (ruby_instance_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value_ref
+            (ruby_class_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value_ref
+            (ruby_constant)))))))
+
+================================================================================
+HTML-like attributes with Ruby value refrences and hash attributes
+================================================================================
+
+%input(foo=lvar bar=$gvar baz=@ivar waz=@@cvar lol=CONSTANT){
+  asd: $hello
+}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (attributes
+      (html_attributes
+        (attribute
+          (attribute_name)
+          (ruby_value_ref
+            (ruby_local_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value_ref
+            (ruby_global_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value_ref
+            (ruby_instance_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value_ref
+            (ruby_class_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value_ref
+            (ruby_constant))))
+      (ruby_attributes))))
