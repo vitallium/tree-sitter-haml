@@ -1,6 +1,6 @@
 {
   "name": "tree-sitter-haml",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Vitaly Slobodin <vitaliy.slobodin@gmail.com>",
   "license": "MIT",
   "description": "HAML grammar for tree-sitter",
