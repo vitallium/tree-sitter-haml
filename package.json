@@ -14,11 +14,11 @@
     "prebuildify": "prebuildify --napi --strip"
   },
   "dependencies": {
-    "node-addon-api": "8.2.2",
+    "node-addon-api": "8.4.0",
     "node-gyp-build": "4.8.4"
   },
   "peerDependencies": {
-    "tree-sitter": "^0.22.4"
+    "tree-sitter": "^0.25.0"
   },
   "peerDependenciesMeta": {
     "tree_sitter": {
@@ -26,7 +26,7 @@
     }
   },
   "devDependencies": {
-    "tree-sitter-cli": "0.24.7",
+    "tree-sitter-cli": "0.25.6",
     "prebuildify": "6.0.1"
   },
   "files": [
