@@ -164,7 +164,15 @@ module.exports = grammar({
         ),
       ),
     ruby_interpolation: ($) => seq("#", $.ruby_expression),
-    ruby_expression: () => /\{[^}]*\}/,
+    ruby_expression: ($) =>
+      seq(
+        "{",
+        repeat(choice(
+          /[^{}]+/,
+          $.ruby_expression,
+        )),
+        "}",
+      ),
     ruby_class_variable: () => seq("@@", /[a-zA-Z0-9_]+/),
     ruby_instance_variable: () => seq("@", /[_a-zA-Z0-9]+/),
     ruby_global_variable: () => seq("$", /[a-zA-Z0-9_]+/),

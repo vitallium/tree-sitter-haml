@@ -307,3 +307,49 @@ Tag with preserved Ruby output
     (tag_name)
     (ruby_block_preserve
       (ruby_code))))
+
+================================================================================
+Ruby interpolation with nested braces
+================================================================================
+
+%span(class="widget_#{@widget.number}")
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (attributes
+      (html_attributes
+        (attribute
+          (attribute_name)
+          (quoted_attribute_value
+            (attribute_value)
+            (ruby_interpolation
+              (ruby_expression))))))))
+
+================================================================================
+Ruby interpolation with hash literal
+================================================================================
+
+%p This is #{ {foo: "bar"} } cool
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (verbatim_string)))
+
+================================================================================
+Ruby interpolation with block
+================================================================================
+
+%p Numbers: #{ arr.map{|x| x * 2} }
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (verbatim_string)))

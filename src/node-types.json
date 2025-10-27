@@ -455,6 +455,21 @@
     "fields": {}
   },
   {
+    "type": "ruby_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ruby_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "ruby_global_variable",
     "named": true,
     "fields": {}
@@ -766,10 +781,6 @@
     "named": true
   },
   {
-    "type": "ruby_expression",
-    "named": true
-  },
-  {
     "type": "ruby_local_variable",
     "named": true
   },
@@ -784,6 +795,14 @@
   {
     "type": "verbatim_string",
     "named": true
+  },
+  {
+    "type": "{",
+    "named": false
+  },
+  {
+    "type": "}",
+    "named": false
   },
   {
     "type": "~",
