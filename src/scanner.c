@@ -73,11 +73,15 @@ unsigned tree_sitter_haml_external_scanner_serialize(void *payload,
   Scanner *scanner = (Scanner *)payload;
   size_t size = 0;
 
+  // Serialize indent levels as 16-bit values (2 bytes each)
+  // Skip the first element which is always 0
   uint32_t iter = 1;
   for (; iter < scanner->indents.len &&
-         size < TREE_SITTER_SERIALIZATION_BUFFER_SIZE;
+         size + 2 <= TREE_SITTER_SERIALIZATION_BUFFER_SIZE;
        ++iter) {
-    buffer[size++] = (char)scanner->indents.data[iter];
+    uint16_t indent = scanner->indents.data[iter];
+    buffer[size++] = (uint8_t)(indent & 0xFF);        // Low byte
+    buffer[size++] = (uint8_t)(indent >> 8);          // High byte
   }
 
   return size;
@@ -90,9 +94,11 @@ void tree_sitter_haml_external_scanner_deserialize(void *payload,
   VEC_CLEAR(scanner->indents);
   VEC_PUSH(scanner->indents, 0);
 
+  // Deserialize 16-bit indent levels (2 bytes each)
   if (length > 0) {
-    for (size_t i = 0; i < length; i++) {
-      VEC_PUSH(scanner->indents, (unsigned char)buffer[i]);
+    for (size_t i = 0; i + 1 < length; i += 2) {
+      uint16_t indent = (uint8_t)buffer[i] | ((uint16_t)(uint8_t)buffer[i + 1] << 8);
+      VEC_PUSH(scanner->indents, indent);
     }
     return;
   }
