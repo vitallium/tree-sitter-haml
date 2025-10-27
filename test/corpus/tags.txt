@@ -329,3 +329,63 @@ Tag with attributes and whitespace control
       (ruby_attributes))
     (nuke_inner_whitespace)
     (verbatim_string)))
+
+================================================================================
+Tag with object reference
+================================================================================
+
+%div[@user]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (object_reference
+      (ruby_instance_variable))))
+
+================================================================================
+Tag with object reference and prefix
+================================================================================
+
+%div[@article, :profile]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (object_reference
+      (ruby_instance_variable)
+      (object_prefix))))
+
+================================================================================
+Implicit div with object reference
+================================================================================
+
+.post[@post]
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (class
+      (class_name))
+    (object_reference
+      (ruby_instance_variable))))
+
+================================================================================
+Tag with object reference and attributes
+================================================================================
+
+%div[@user]{class: "special"}
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (object_reference
+      (ruby_instance_variable))
+    (attributes
+      (ruby_attributes))))

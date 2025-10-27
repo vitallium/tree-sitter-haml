@@ -37,6 +37,7 @@ module.exports = grammar({
       seq(
         choice($.tag_name, $.id, $.class),
         optional(repeat1(choice($.tag_name, $.id, $.class))),
+        optional($.object_reference),
         optional($.attributes),
         optional(choice(
           alias(">", $.nuke_outer_whitespace),
@@ -74,6 +75,20 @@ module.exports = grammar({
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
     attributes: ($) => repeat1(choice($.html_attributes, $.ruby_attributes)),
+    object_reference: ($) =>
+      seq(
+        "[",
+        choice(
+          $.ruby_instance_variable,
+          $.ruby_local_variable,
+          $.ruby_global_variable,
+        ),
+        optional(seq(",", choice(
+          alias(/:[a-z_]+/, $.object_prefix),
+          $.ruby_local_variable,
+        ))),
+        "]",
+      ),
     // Starts with %
     tag_name: () => /%[-:\w]+/,
     class_or_id_value: () => /[-:_a-zA-Z0-9\@]+/,

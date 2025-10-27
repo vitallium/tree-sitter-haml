@@ -158,6 +158,33 @@
     "fields": {}
   },
   {
+    "type": "object_reference",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "object_prefix",
+          "named": true
+        },
+        {
+          "type": "ruby_global_variable",
+          "named": true
+        },
+        {
+          "type": "ruby_instance_variable",
+          "named": true
+        },
+        {
+          "type": "ruby_local_variable",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "quoted_attribute_value",
     "named": true,
     "fields": {},
@@ -644,6 +671,10 @@
           "named": true
         },
         {
+          "type": "object_reference",
+          "named": true
+        },
+        {
           "type": "ruby_block_output",
           "named": true
         },
@@ -727,6 +758,10 @@
     "named": false
   },
   {
+    "type": ",",
+    "named": false
+  },
+  {
     "type": "-",
     "named": false
   },
@@ -804,6 +839,10 @@
   },
   {
     "type": "nuke_outer_whitespace",
+    "named": true
+  },
+  {
+    "type": "object_prefix",
     "named": true
   },
   {

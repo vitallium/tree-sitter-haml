@@ -165,6 +165,18 @@
           "members": [
             {
               "type": "SYMBOL",
+              "name": "object_reference"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
               "name": "attributes"
             },
             {
@@ -414,6 +426,71 @@
           }
         ]
       }
+    },
+    "object_reference": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "["
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "ruby_instance_variable"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ruby_local_variable"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "ruby_global_variable"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "STRING",
+                  "value": ","
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "ALIAS",
+                      "content": {
+                        "type": "PATTERN",
+                        "value": ":[a-z_]+"
+                      },
+                      "named": true,
+                      "value": "object_prefix"
+                    },
+                    {
+                      "type": "SYMBOL",
+                      "name": "ruby_local_variable"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "STRING",
+          "value": "]"
+        }
+      ]
     },
     "tag_name": {
       "type": "PATTERN",
