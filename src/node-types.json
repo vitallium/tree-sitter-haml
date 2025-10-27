@@ -84,7 +84,29 @@
   {
     "type": "doctype",
     "named": true,
-    "fields": {}
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "doctype_name",
+          "named": true
+        },
+        {
+          "type": "doctype_version",
+          "named": true
+        },
+        {
+          "type": "doctype_xml",
+          "named": true
+        },
+        {
+          "type": "doctype_xml_encoding",
+          "named": true
+        }
+      ]
+    }
   },
   {
     "type": "escaped_text",
@@ -754,6 +776,22 @@
   },
   {
     "type": "attribute_value",
+    "named": true
+  },
+  {
+    "type": "doctype_name",
+    "named": true
+  },
+  {
+    "type": "doctype_version",
+    "named": true
+  },
+  {
+    "type": "doctype_xml",
+    "named": true
+  },
+  {
+    "type": "doctype_xml_encoding",
     "named": true
   },
   {

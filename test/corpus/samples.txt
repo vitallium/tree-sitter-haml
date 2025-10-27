@@ -99,7 +99,8 @@ app/views/layouts/application.html.haml
     (ruby_code))
   (ruby_block_run
     (ruby_code))
-  (doctype)
+  (doctype
+    (doctype_version))
   (tag
     (tag_name)
     (attributes

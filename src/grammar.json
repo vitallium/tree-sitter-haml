@@ -62,8 +62,53 @@
           "value": "!!!"
         },
         {
-          "type": "SYMBOL",
-          "name": "_text"
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "STRING",
+                    "value": "XML"
+                  },
+                  "named": true,
+                  "value": "doctype_xml"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "XML\\s+\\S+"
+                  },
+                  "named": true,
+                  "value": "doctype_xml_encoding"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "[0-9]+"
+                  },
+                  "named": true,
+                  "value": "doctype_version"
+                },
+                {
+                  "type": "ALIAS",
+                  "content": {
+                    "type": "PATTERN",
+                    "value": "[A-Z][a-z]+"
+                  },
+                  "named": true,
+                  "value": "doctype_name"
+                }
+              ]
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         }
       ]
     },

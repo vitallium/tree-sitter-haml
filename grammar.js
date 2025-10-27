@@ -21,7 +21,18 @@ module.exports = grammar({
           $.escaped_text,
         ),
       ),
-    doctype: ($) => seq("!!!", $._text),
+    doctype: ($) =>
+      seq(
+        "!!!",
+        optional(
+          choice(
+            alias("XML", $.doctype_xml),
+            alias(/XML\s+\S+/, $.doctype_xml_encoding),
+            alias(/[0-9]+/, $.doctype_version),
+            alias(/[A-Z][a-z]+/, $.doctype_name),
+          ),
+        ),
+      ),
     tag: ($) =>
       seq(
         choice($.tag_name, $.id, $.class),
