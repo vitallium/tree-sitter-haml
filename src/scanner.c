@@ -197,6 +197,12 @@ bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
       }
     }
 
+    // Ignore blank lines for indentation
+    if (lexer->lookahead == '\r' || lexer->lookahead == '\n' || 
+        lexer->lookahead == 0) {
+      return false;
+    }
+
     if (indent_length > VEC_BACK(scanner->indents) && valid_symbols[INDENT]) {
       VEC_PUSH(scanner->indents, indent_length);
       lexer->result_symbol = INDENT;

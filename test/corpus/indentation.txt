@@ -76,3 +76,45 @@ Mixed spaces and tabs
     (tag
       (tag_name)
       (verbatim_string))))
+
+================================================================================
+Blank lines between siblings
+================================================================================
+
+%div
+  %p First
+
+  %p Second
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (tag
+      (tag_name)
+      (verbatim_string))
+    (tag
+      (tag_name)
+      (verbatim_string))))
+
+================================================================================
+Blank lines with different indentation
+================================================================================
+
+%div
+  %p Child
+    
+  %span Another child
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (tag
+      (tag_name)
+      (verbatim_string))
+    (tag
+      (tag_name)
+      (verbatim_string))))
