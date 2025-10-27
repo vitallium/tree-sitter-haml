@@ -640,13 +640,8 @@
           "value": "="
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_text"
-          },
-          "named": true,
-          "value": "ruby_code"
+          "type": "SYMBOL",
+          "name": "ruby_code"
         },
         {
           "type": "SEQ",
@@ -679,13 +674,8 @@
           "value": "-"
         },
         {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "_text"
-          },
-          "named": true,
-          "value": "ruby_code"
+          "type": "SYMBOL",
+          "name": "ruby_code"
         },
         {
           "type": "SEQ",
@@ -709,6 +699,38 @@
           ]
         }
       ]
+    },
+    "ruby_code": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "PATTERN",
+              "value": "[^\\n]+"
+            },
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "PATTERN",
+                    "value": ",[ \\t]*\\n[ \\t]*"
+                  },
+                  {
+                    "type": "PATTERN",
+                    "value": "[^\\n]+"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }
     },
     "ruby_interpolation": {
       "type": "SEQ",

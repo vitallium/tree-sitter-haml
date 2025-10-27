@@ -107,14 +107,28 @@ module.exports = grammar({
       seq(
         optional("!"),
         "=",
-        alias($._text, $.ruby_code),
+        $.ruby_code,
         seq($._newline, optional($._children)),
       ),
     ruby_block_run: ($) =>
       seq(
         "-",
-        alias($._text, $.ruby_code),
+        $.ruby_code,
         seq($._newline, optional($._children)),
+      ),
+    ruby_code: () =>
+      token(
+        prec(1,
+          seq(
+            /[^\n]+/,
+            repeat(
+              seq(
+                /,[ \t]*\n[ \t]*/,
+                /[^\n]+/,
+              ),
+            ),
+          ),
+        ),
       ),
     ruby_interpolation: ($) => seq("#", $.ruby_expression),
     ruby_expression: () => /\{[^}]*\}/,
