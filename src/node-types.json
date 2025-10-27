@@ -170,7 +170,129 @@
           "named": true
         },
         {
+          "type": "ruby_block_output_nuke",
+          "named": true
+        },
+        {
+          "type": "ruby_block_preserve",
+          "named": true
+        },
+        {
           "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_block_sanitized",
+          "named": true
+        },
+        {
+          "type": "ruby_code",
+          "named": true
+        },
+        {
+          "type": "ruby_interpolation",
+          "named": true
+        },
+        {
+          "type": "tag",
+          "named": true
+        },
+        {
+          "type": "verbatim_string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ruby_block_output_nuke",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "filter",
+          "named": true
+        },
+        {
+          "type": "ruby_block_output",
+          "named": true
+        },
+        {
+          "type": "ruby_block_output_nuke",
+          "named": true
+        },
+        {
+          "type": "ruby_block_preserve",
+          "named": true
+        },
+        {
+          "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_block_sanitized",
+          "named": true
+        },
+        {
+          "type": "ruby_code",
+          "named": true
+        },
+        {
+          "type": "ruby_interpolation",
+          "named": true
+        },
+        {
+          "type": "tag",
+          "named": true
+        },
+        {
+          "type": "verbatim_string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ruby_block_preserve",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "filter",
+          "named": true
+        },
+        {
+          "type": "ruby_block_output",
+          "named": true
+        },
+        {
+          "type": "ruby_block_output_nuke",
+          "named": true
+        },
+        {
+          "type": "ruby_block_preserve",
+          "named": true
+        },
+        {
+          "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_block_sanitized",
           "named": true
         },
         {
@@ -213,7 +335,74 @@
           "named": true
         },
         {
+          "type": "ruby_block_output_nuke",
+          "named": true
+        },
+        {
+          "type": "ruby_block_preserve",
+          "named": true
+        },
+        {
           "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_block_sanitized",
+          "named": true
+        },
+        {
+          "type": "ruby_code",
+          "named": true
+        },
+        {
+          "type": "ruby_interpolation",
+          "named": true
+        },
+        {
+          "type": "tag",
+          "named": true
+        },
+        {
+          "type": "verbatim_string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ruby_block_sanitized",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "filter",
+          "named": true
+        },
+        {
+          "type": "ruby_block_output",
+          "named": true
+        },
+        {
+          "type": "ruby_block_output_nuke",
+          "named": true
+        },
+        {
+          "type": "ruby_block_preserve",
+          "named": true
+        },
+        {
+          "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_block_sanitized",
           "named": true
         },
         {
@@ -322,7 +511,19 @@
           "named": true
         },
         {
+          "type": "ruby_block_output_nuke",
+          "named": true
+        },
+        {
+          "type": "ruby_block_preserve",
+          "named": true
+        },
+        {
           "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_block_sanitized",
           "named": true
         },
         {
@@ -369,7 +570,19 @@
           "named": true
         },
         {
+          "type": "ruby_block_output_nuke",
+          "named": true
+        },
+        {
+          "type": "ruby_block_preserve",
+          "named": true
+        },
+        {
           "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_block_sanitized",
           "named": true
         },
         {
@@ -400,11 +613,11 @@
     "named": false
   },
   {
-    "type": "!",
+    "type": "!!!",
     "named": false
   },
   {
-    "type": "!!!",
+    "type": "!=",
     "named": false
   },
   {
@@ -417,6 +630,10 @@
   },
   {
     "type": "$",
+    "named": false
+  },
+  {
+    "type": "&=",
     "named": false
   },
   {
@@ -514,5 +731,9 @@
   {
     "type": "verbatim_string",
     "named": true
+  },
+  {
+    "type": "~",
+    "named": false
   }
 ]

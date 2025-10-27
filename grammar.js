@@ -12,6 +12,9 @@ module.exports = grammar({
           $.tag,
           $.comment,
           $.ruby_block_output,
+          $.ruby_block_output_nuke,
+          $.ruby_block_sanitized,
+          $.ruby_block_preserve,
           $.ruby_block_run,
           $.ruby_interpolation,
           $.filter,
@@ -26,6 +29,9 @@ module.exports = grammar({
         optional(alias("/", $.self_close_slash)),
         choice(
           $.ruby_block_output,
+          $.ruby_block_output_nuke,
+          $.ruby_block_sanitized,
+          $.ruby_block_preserve,
           seq(" ", $.verbatim_string),
           seq($._newline, optional($._children)),
         ),
@@ -38,6 +44,9 @@ module.exports = grammar({
       choice(
         $.tag,
         $.ruby_block_output,
+        $.ruby_block_output_nuke,
+        $.ruby_block_sanitized,
+        $.ruby_block_preserve,
         $.ruby_block_run,
         $.ruby_interpolation,
         $.filter,
@@ -105,8 +114,25 @@ module.exports = grammar({
     verbatim_string: ($) => token(prec(-1, /[^\n]+/)),
     ruby_block_output: ($) =>
       seq(
-        optional("!"),
         "=",
+        $.ruby_code,
+        seq($._newline, optional($._children)),
+      ),
+    ruby_block_output_nuke: ($) =>
+      seq(
+        "!=",
+        $.ruby_code,
+        seq($._newline, optional($._children)),
+      ),
+    ruby_block_sanitized: ($) =>
+      seq(
+        "&=",
+        $.ruby_code,
+        seq($._newline, optional($._children)),
+      ),
+    ruby_block_preserve: ($) =>
+      seq(
+        "~",
         $.ruby_code,
         seq($._newline, optional($._children)),
       ),

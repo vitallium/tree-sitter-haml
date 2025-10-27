@@ -178,7 +178,7 @@ Unescaping HTML
 (source_file
   (ruby_block_output
     (ruby_code))
-  (ruby_block_output
+  (ruby_block_output_nuke
     (ruby_code))
   (tag
     (tag_name)))
