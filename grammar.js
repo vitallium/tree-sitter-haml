@@ -26,6 +26,10 @@ module.exports = grammar({
         choice($.tag_name, $.id, $.class),
         optional(repeat1(choice($.tag_name, $.id, $.class))),
         optional($.attributes),
+        optional(choice(
+          alias(">", $.nuke_outer_whitespace),
+          alias("<", $.nuke_inner_whitespace)
+        )),
         optional(alias("/", $.self_close_slash)),
         choice(
           $.ruby_block_output,

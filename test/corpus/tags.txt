@@ -262,3 +262,70 @@ HTML-like attributes with ruby value references
           (attribute_name)
           (ruby_value_ref
             (ruby_constant)))))))
+
+================================================================================
+Tag with outer whitespace removal
+================================================================================
+
+%blockquote>
+  %div
+    Foo!
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (nuke_outer_whitespace)
+    (tag
+      (tag_name)
+      (verbatim_string))))
+
+================================================================================
+Tag with inner whitespace removal
+================================================================================
+
+%blockquote<
+  %div
+    Foo!
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (nuke_inner_whitespace)
+    (tag
+      (tag_name)
+      (verbatim_string))))
+
+================================================================================
+Tag with whitespace control and self-closing
+================================================================================
+
+%img>/
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (nuke_outer_whitespace)
+    (self_close_slash)))
+
+================================================================================
+Tag with attributes and whitespace control
+================================================================================
+
+%p{class: "test"}<
+  Content
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (attributes
+      (ruby_attributes))
+    (nuke_inner_whitespace)
+    (verbatim_string)))

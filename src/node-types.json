@@ -566,6 +566,14 @@
           "named": true
         },
         {
+          "type": "nuke_inner_whitespace",
+          "named": true
+        },
+        {
+          "type": "nuke_outer_whitespace",
+          "named": true
+        },
+        {
           "type": "ruby_block_output",
           "named": true
         },
@@ -698,6 +706,14 @@
   },
   {
     "type": "filter_name",
+    "named": true
+  },
+  {
+    "type": "nuke_inner_whitespace",
+    "named": true
+  },
+  {
+    "type": "nuke_outer_whitespace",
     "named": true
   },
   {
