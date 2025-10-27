@@ -87,6 +87,11 @@
     "fields": {}
   },
   {
+    "type": "escaped_text",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "filter",
     "named": true,
     "fields": {},
@@ -162,6 +167,10 @@
           "named": true
         },
         {
+          "type": "escaped_text",
+          "named": true
+        },
+        {
           "type": "filter",
           "named": true
         },
@@ -214,6 +223,10 @@
       "types": [
         {
           "type": "comment",
+          "named": true
+        },
+        {
+          "type": "escaped_text",
           "named": true
         },
         {
@@ -272,6 +285,10 @@
           "named": true
         },
         {
+          "type": "escaped_text",
+          "named": true
+        },
+        {
           "type": "filter",
           "named": true
         },
@@ -327,6 +344,10 @@
           "named": true
         },
         {
+          "type": "escaped_text",
+          "named": true
+        },
+        {
           "type": "filter",
           "named": true
         },
@@ -379,6 +400,10 @@
       "types": [
         {
           "type": "comment",
+          "named": true
+        },
+        {
+          "type": "escaped_text",
           "named": true
         },
         {
@@ -503,6 +528,10 @@
           "named": true
         },
         {
+          "type": "escaped_text",
+          "named": true
+        },
+        {
           "type": "filter",
           "named": true
         },
@@ -555,6 +584,10 @@
         },
         {
           "type": "comment",
+          "named": true
+        },
+        {
+          "type": "escaped_text",
           "named": true
         },
         {
@@ -690,6 +723,10 @@
   },
   {
     "type": "[",
+    "named": false
+  },
+  {
+    "type": "\\",
     "named": false
   },
   {

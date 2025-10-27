@@ -46,6 +46,10 @@
           {
             "type": "SYMBOL",
             "name": "filter"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "escaped_text"
           }
         ]
       }
@@ -294,6 +298,10 @@
         {
           "type": "SYMBOL",
           "name": "filter"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "escaped_text"
         },
         {
           "type": "SYMBOL",
@@ -686,6 +694,23 @@
           "value": "[^\\n]+"
         }
       }
+    },
+    "escaped_text": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "STRING",
+          "value": "\\"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_text"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_newline"
+        }
+      ]
     },
     "ruby_block_output": {
       "type": "SEQ",

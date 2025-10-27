@@ -18,6 +18,7 @@ module.exports = grammar({
           $.ruby_block_run,
           $.ruby_interpolation,
           $.filter,
+          $.escaped_text,
         ),
       ),
     doctype: ($) => seq("!!!", $._text),
@@ -54,6 +55,7 @@ module.exports = grammar({
         $.ruby_block_run,
         $.ruby_interpolation,
         $.filter,
+        $.escaped_text,
         $.verbatim_string,
         $.comment,
         $._newline,
@@ -116,6 +118,7 @@ module.exports = grammar({
       ),
     _text: () => /[^\n]*/,
     verbatim_string: ($) => token(prec(-1, /[^\n]+/)),
+    escaped_text: ($) => seq("\\", $._text, $._newline),
     ruby_block_output: ($) =>
       seq(
         "=",
