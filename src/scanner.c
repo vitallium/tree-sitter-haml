@@ -109,6 +109,10 @@ bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
                                             const bool *valid_symbols) {
   Scanner *scanner = (Scanner *)payload;
 
+  // Handle CRLF (Windows) and bare CR (old Mac) as newline
+  if (lexer->lookahead == '\r') {
+    skip(lexer);
+  }
   if (lexer->lookahead == '\n') {
     if (valid_symbols[NEWLINE]) {
       skip(lexer);
