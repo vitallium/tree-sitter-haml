@@ -82,7 +82,7 @@ module.exports = grammar({
       choice(
         seq(
           "'",
-          repeat1(
+          repeat(
             choice(
               $.ruby_interpolation,
               alias($._html_identifier, $.attribute_value),
@@ -92,7 +92,7 @@ module.exports = grammar({
         ),
         seq(
           '"',
-          repeat1(
+          repeat(
             choice(
               $.ruby_interpolation,
               alias($._html_identifier, $.attribute_value),
