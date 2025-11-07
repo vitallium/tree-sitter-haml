@@ -12,6 +12,23 @@ To build the grammar, run:
 npm run build
 ```
 
+### Registering the grammar
+
+If you want the `tree-sitter` CLI to pick up this grammar after building it, add the repository to your parser directories:
+
+1. Ensure you have a config file (`tree-sitter init-config` creates `~/.config/tree-sitter/config.json` if it is missing).
+2. Edit that file and include the absolute path to this repo in the `parser-directories` array, for example:
+
+   ```json
+   {
+     "parser-directories": [
+       "/Users/you/path/to/tree-sitter-haml"
+     ]
+   }
+   ```
+
+Once registered, commands like `tree-sitter parse` and `tree-sitter highlight` will automatically load the HAML parser from this build.
+
 ### Testing
 
 To test the grammar, run:
