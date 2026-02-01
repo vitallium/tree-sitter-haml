@@ -1,111 +1,12 @@
 ================================================================================
-Simple comment
+Downlevel revealed conditional comment
 ================================================================================
 
-%peanutbutterjelly
-  / This is the peanutbutterjelly element
-  I like sandwiches!
+/![if !IE]
+  %p Hi
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (tag
-    (tag_name)
-    (comment)
-    (verbatim_string)))
-
-================================================================================
-Comment that wraps indented sections of code
-================================================================================
-
-/
-  %p This doesn't render...
-  %div
-    %h1 Because it's commented out!
-
-.foo
-
---------------------------------------------------------------------------------
-
-(source_file
-  (comment)
-  (tag
-    (class
-      (class_name))))
-
-================================================================================
-Conditional comment
-================================================================================
-
-/[if IE]
-  %a{ :href => 'http://www.mozilla.com/en-US/firefox/' }
-    %h1 Get Firefox
-%h1
-
---------------------------------------------------------------------------------
-
-(source_file
-  (comment)
-  (tag
-    (tag_name)))
-
-================================================================================
-HAML single-line comment
-================================================================================
-
-%p foo
--# This is a comment
-%p bar
-
---------------------------------------------------------------------------------
-
-(source_file
-  (tag
-    (tag_name)
-    (verbatim_string))
-  (comment)
-  (tag
-    (tag_name)
-    (verbatim_string)))
-
-================================================================================
-HAML multi-line comment
-================================================================================
-
-%p foo
--#
-  This won't be displayed
-    Nor will this
-                   Nor will this.
-%p bar
-
---------------------------------------------------------------------------------
-
-(source_file
-  (tag
-    (tag_name)
-    (verbatim_string))
-  (comment)
-  (tag
-    (tag_name)
-    (verbatim_string)))
-
-================================================================================
-HAML multi-line comment v2
-================================================================================
-
-= form_for(@resource) do |f|
-  = hidden_field_tag :client_id, @pre_auth.client.uid
-  -#= hidden_field_tag :redirect_uri, @pre_auth.redirect_uri
-  = hidden_field_tag :state, @pre_auth.state
-
---------------------------------------------------------------------------------
-
-(source_file
-  (ruby_block_output
-    (ruby_code)
-    (ruby_block_output
-      (ruby_code))
-    (comment)
-    (ruby_block_output
-      (ruby_code))))
+  (comment
+    (comment_condition)))
