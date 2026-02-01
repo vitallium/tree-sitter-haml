@@ -14,17 +14,34 @@
         "src/scanner.c",
       ],
       "conditions": [
-        ["OS!='win'", {
-          "cflags_c": [
-            "-std=c11",
-          ],
-        }, { # OS == "win"
-          "cflags_c": [
-            "/std:c11",
-            "/utf-8",
-          ],
+        ["OS=='mac'", {
+          "xcode_settings": {
+            "GCC_SYMBOLS_PRIVATE_EXTERN": "YES", # -fvisibility=hidden
+            "CLANG_CXX_LANGUAGE_STANDARD": "<(cxxstd)",
+            "MACOSX_DEPLOYMENT_TARGET": "10.9",
+          },
+        }],
+        ["OS=='win'", {
+          "msvs_settings": {
+            "VCCLCompilerTool": {
+              "AdditionalOptions": [
+                "/std:<(cxxstd)",
+              ],
+              "RuntimeLibrary": 0,
+            },
+          },
+        }],
+        ["OS == 'linux'", {
+          "cflags_cc": [
+            "-std=<(cxxstd)",
+            "-fvisibility=hidden",
+            "-Wno-cast-function-type",
+          ]
         }],
       ],
     }
-  ]
+  ],
+  "variables": {
+    "cxxstd%": "<!(node -p \"parseInt(process.env.npm_config_target ?? process.versions.node) < 22 ? 'c++17' : 'c++20'\")",
+  }
 }
