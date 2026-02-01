@@ -1,6 +1,9 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
+const pipe_line = /[^\n]*[ \t]+\|[ \t]*\r?\n/;
+const pipe_line_no_newline = /[^\n]*[ \t]+\|[ \t]*/;
+
 module.exports = grammar({
   name: "haml",
   externals: ($) => [$._newline, $._indent, $._dedent, $.ruby_attributes],
@@ -143,7 +146,14 @@ module.exports = grammar({
         ),
       ),
     _text: () => /[^\n]*/,
-    verbatim_string: ($) => token(prec(-1, /[^\n]+/)),
+    verbatim_string: ($) => token(
+      prec(-1,
+        choice(
+          seq(pipe_line, repeat1(pipe_line)),
+          /[^\n]+/,
+        ),
+      ),
+    ),
     escaped_text: ($) => seq("\\", $._text, $._newline),
     ruby_block_output: ($) =>
       seq(
@@ -178,12 +188,18 @@ module.exports = grammar({
     ruby_code: () =>
       token(
         prec(1,
-          seq(
-            /[^\n]+/,
-            repeat(
-              seq(
-                /,[ \t]*\n[ \t]*/,
-                /[^\n]+/,
+          choice(
+            seq(
+              pipe_line_no_newline,
+              repeat1(seq(/\r?\n[ \t]*/, pipe_line_no_newline)),
+            ),
+            seq(
+              /[^\n]+/,
+              repeat(
+                seq(
+                  /,[ \t]*\r?\n[ \t]*/,
+                  /[^\n]+/,
+                ),
               ),
             ),
           ),

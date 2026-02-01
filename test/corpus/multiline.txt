@@ -1,0 +1,42 @@
+================================================================================
+Multiline pipe text
+================================================================================
+
+%p
+  First line |
+  second line |
+  third line |
+%p after
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (verbatim_string))
+  (tag
+    (tag_name)
+    (verbatim_string)))
+
+================================================================================
+Multiline pipe ruby
+================================================================================
+
+%hoo= h(                       |
+  "I think this might get " +  |
+  "pretty long so I should " + |
+  "probably make it " +        |
+  "multiline so it doesn't " + |
+  "look awful.")               |
+%p done
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (ruby_block_output
+      (ruby_code)))
+  (tag
+    (tag_name)
+    (verbatim_string)))
