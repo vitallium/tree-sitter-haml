@@ -1,8 +1,10 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
-const pipe_line = /[^\n]*[ \t]+\|[ \t]*\r?\n/;
 const pipe_line_no_newline = /[^\n]*[ \t]+\|[ \t]*/;
+const indented_comment_content = /[ \t][^\n]*/;
+const html_comment_line = /\/[^!\n][^\n]*/;
+const comment_condition_content = /[^\n\]]*/;
 
 module.exports = grammar({
   name: "haml",
@@ -100,25 +102,64 @@ module.exports = grammar({
     // Starts with `.` (dot)
     class: ($) => seq(".", $.class_name),
     class_name: () => /[-:_a-zA-Z0-9\@]+/,
-    comment: ($) => choice($._comment_line, $._comment_block),
+    comment: ($) => choice($._comment_block, $._comment_line),
     // HTML Comments starts with /
     _comment_line: ($) =>
-      seq(
-        choice("/", "-#"),
-        $._text,
-        $._newline,
-        optional(seq($._indent, repeat1(seq($._text, $._newline)), $._dedent)),
+      choice(
+        prec.right(1,
+          seq(
+            "/!",
+            $.comment_condition,
+            $._newline,
+            repeat1(seq(token(indented_comment_content), $._newline)),
+          ),
+        ),
+        prec.right(1,
+          seq(
+            token(html_comment_line),
+            $._newline,
+            optional(seq(
+              $._indent,
+              repeat1(seq($._text, $._newline)),
+              $._dedent,
+            )),
+          ),
+        ),
+        prec.right(1,
+          seq(
+            "-#",
+            $._text,
+            $._newline,
+            optional(seq(
+              $._indent,
+              repeat1(seq($._text, $._newline)),
+              $._dedent,
+            )),
+          ),
+        ),
       ),
     _comment_block: ($) =>
-      seq(
-        choice("/", "-#"),
-        optional($.comment_condition),
-        $._newline,
-        $._indent,
-        repeat1(seq($._text, $._newline)),
-        $._dedent,
+      prec.right(1,
+        choice(
+          seq(
+            "/",
+            optional($.comment_condition),
+            $._newline,
+            $._indent,
+            repeat1(seq($._text, $._newline)),
+            $._dedent,
+          ),
+          seq(
+            "-#",
+            optional($.comment_condition),
+            $._newline,
+            $._indent,
+            repeat1(seq($._text, $._newline)),
+            $._dedent,
+          ),
+        ),
       ),
-    comment_condition: ($) => seq("[", $._text, "]"),
+    comment_condition: () => seq("[", comment_condition_content, "]"),
     attribute_name: () => /#?[\w@\-:]+/,
     attribute: ($) =>
       seq($.attribute_name, optional(seq("=", choice($.quoted_attribute_value, $.ruby_value_ref)))),
@@ -149,7 +190,10 @@ module.exports = grammar({
     verbatim_string: ($) => token(
       prec(-1,
         choice(
-          seq(pipe_line, repeat1(pipe_line)),
+          seq(
+            pipe_line_no_newline,
+            repeat(seq(/\r?\n[ \t]*/, pipe_line_no_newline)),
+          ),
           /[^\n]+/,
         ),
       ),
@@ -191,7 +235,7 @@ module.exports = grammar({
           choice(
             seq(
               pipe_line_no_newline,
-              repeat1(seq(/\r?\n[ \t]*/, pipe_line_no_newline)),
+              repeat(seq(/\r?\n[ \t]*/, pipe_line_no_newline)),
             ),
             seq(
               /[^\n]+/,
