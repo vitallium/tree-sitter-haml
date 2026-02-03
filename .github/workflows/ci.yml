@@ -33,15 +33,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: 22.22.0
       - name: Set up tree-sitter
         uses: tree-sitter/setup-action/cli@v2
       - name: Run tests
         uses: tree-sitter/parser-test-action@v3
         with:
+          node-version: "22.22.0"
           test-rust: true
           test-node: true
           test-python: true
