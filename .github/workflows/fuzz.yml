@@ -15,8 +15,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
-      - uses: vigoux/tree-sitter-fuzz-action@v1
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: vigoux/tree-sitter-fuzz-action@2b9f6faa39ce4a3a6891884af514af3b5b9743c3 # v1.1
         with:
           language: haml
           external-scanner: src/scanner.c

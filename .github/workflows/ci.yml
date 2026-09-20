@@ -32,11 +32,11 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-15]
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Set up tree-sitter
-        uses: tree-sitter/setup-action/cli@v2
+        uses: tree-sitter/setup-action/cli@49f8c1f20b60102eae8c033bb7c7f6cd056f6086 # v2
       - name: Run tests
-        uses: tree-sitter/parser-test-action@v3
+        uses: tree-sitter/parser-test-action@05f6ce7c7e54603c45cd87ed926725dc870bcc63 # v3
         with:
           node-version: "22.22.0"
           go-version: "1.24"
