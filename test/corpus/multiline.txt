@@ -6,7 +6,7 @@ Multiline pipe text
   First line |
   second line |
   third line |
-%p after
+%p= a | b
 
 --------------------------------------------------------------------------------
 
@@ -16,7 +16,8 @@ Multiline pipe text
     (verbatim_string))
   (tag
     (tag_name)
-    (verbatim_string)))
+    (inline_ruby_block
+      (ruby_code))))
 
 ================================================================================
 Multiline pipe ruby
