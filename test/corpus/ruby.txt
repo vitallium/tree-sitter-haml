@@ -23,7 +23,7 @@ Tag with the buffered code
 (source_file
   (tag
     (tag_name)
-    (ruby_block_output
+    (inline_ruby_block
       (ruby_code))))
 
 ================================================================================
@@ -37,7 +37,7 @@ Tag with the buffered code that has spaces inside
 (source_file
   (tag
     (tag_name)
-    (ruby_block_output
+    (inline_ruby_block
       (ruby_code))))
 
 ================================================================================
@@ -122,7 +122,7 @@ Simple conditional
     (ruby_code)
     (tag
       (tag_name)
-      (ruby_block_output
+      (inline_ruby_block
         (ruby_code)))))
 
 ================================================================================
@@ -277,7 +277,7 @@ Tag with unescaped Ruby output
 (source_file
   (tag
     (tag_name)
-    (ruby_block_output_nuke
+    (inline_ruby_block
       (ruby_code))))
 
 ================================================================================
@@ -291,7 +291,7 @@ Tag with sanitized Ruby output
 (source_file
   (tag
     (tag_name)
-    (ruby_block_sanitized
+    (inline_ruby_block
       (ruby_code))))
 
 ================================================================================
@@ -305,7 +305,7 @@ Tag with preserved Ruby output
 (source_file
   (tag
     (tag_name)
-    (ruby_block_preserve
+    (inline_ruby_block
       (ruby_code))))
 
 ================================================================================
@@ -353,3 +353,32 @@ Ruby interpolation with block
   (tag
     (tag_name)
     (verbatim_string)))
+
+================================================================================
+Inline Ruby output uses a distinct node
+================================================================================
+
+%p= escaped_html
+%p!= raw_html
+%p&= user_input
+%pre~ multiline_text
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (inline_ruby_block
+      (ruby_code)))
+  (tag
+    (tag_name)
+    (inline_ruby_block
+      (ruby_code)))
+  (tag
+    (tag_name)
+    (inline_ruby_block
+      (ruby_code)))
+  (tag
+    (tag_name)
+    (inline_ruby_block
+      (ruby_code))))

@@ -237,19 +237,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "ruby_block_output"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ruby_block_output_nuke"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ruby_block_sanitized"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "ruby_block_preserve"
+              "name": "inline_ruby_block"
             },
             {
               "type": "SEQ",
@@ -852,6 +840,57 @@
         {
           "type": "SYMBOL",
           "name": "_newline"
+        }
+      ]
+    },
+    "inline_ruby_block": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "STRING",
+              "value": "="
+            },
+            {
+              "type": "STRING",
+              "value": "!="
+            },
+            {
+              "type": "STRING",
+              "value": "&="
+            },
+            {
+              "type": "STRING",
+              "value": "~"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "ruby_code"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_newline"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "_children"
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
+            }
+          ]
         }
       ]
     },

@@ -35,7 +35,7 @@ Multiline pipe ruby
 (source_file
   (tag
     (tag_name)
-    (ruby_block_output
+    (inline_ruby_block
       (ruby_code)))
   (tag
     (tag_name)

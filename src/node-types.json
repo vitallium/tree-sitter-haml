@@ -158,6 +158,65 @@
     "fields": {}
   },
   {
+    "type": "inline_ruby_block",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "comment",
+          "named": true
+        },
+        {
+          "type": "escaped_text",
+          "named": true
+        },
+        {
+          "type": "filter",
+          "named": true
+        },
+        {
+          "type": "ruby_block_output",
+          "named": true
+        },
+        {
+          "type": "ruby_block_output_nuke",
+          "named": true
+        },
+        {
+          "type": "ruby_block_preserve",
+          "named": true
+        },
+        {
+          "type": "ruby_block_run",
+          "named": true
+        },
+        {
+          "type": "ruby_block_sanitized",
+          "named": true
+        },
+        {
+          "type": "ruby_code",
+          "named": true
+        },
+        {
+          "type": "ruby_interpolation",
+          "named": true
+        },
+        {
+          "type": "tag",
+          "named": true
+        },
+        {
+          "type": "verbatim_string",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "object_reference",
     "named": true,
     "fields": {},
@@ -660,6 +719,10 @@
         },
         {
           "type": "id",
+          "named": true
+        },
+        {
+          "type": "inline_ruby_block",
           "named": true
         },
         {

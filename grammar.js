@@ -48,10 +48,7 @@ module.exports = grammar({
         )),
         optional(alias("/", $.self_close_slash)),
         choice(
-          $.ruby_block_output,
-          $.ruby_block_output_nuke,
-          $.ruby_block_sanitized,
-          $.ruby_block_preserve,
+          $.inline_ruby_block,
           seq(" ", $.verbatim_string),
           seq($._newline, optional($._children)),
         ),
@@ -155,6 +152,12 @@ module.exports = grammar({
       ),
     ),
     escaped_text: ($) => seq("\\", $._text, $._newline),
+    inline_ruby_block: ($) =>
+      seq(
+        choice("=", "!=", "&=", "~"),
+        $.ruby_code,
+        seq($._newline, optional($._children)),
+      ),
     ruby_block_output: ($) =>
       seq(
         "=",

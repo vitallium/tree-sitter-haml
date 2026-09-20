@@ -58,7 +58,7 @@ Nav
         (class_name))
       (tag
         (tag_name)
-        (ruby_block_output
+        (inline_ruby_block
           (ruby_code)))
       (ruby_block_output
         (ruby_code)))))
