@@ -62,6 +62,9 @@ static indent_vec indent_vec_new() {
 
 typedef struct {
   indent_vec indents;
+  uint16_t pending_indent;
+  uint16_t pending_column;
+  bool has_pending_indent;
 } Scanner;
 
 static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
@@ -72,6 +75,12 @@ unsigned tree_sitter_haml_external_scanner_serialize(void *payload,
                                                      char *buffer) {
   Scanner *scanner = (Scanner *)payload;
   size_t size = 0;
+
+  buffer[size++] = scanner->has_pending_indent;
+  buffer[size++] = (uint8_t)(scanner->pending_indent & 0xFF);
+  buffer[size++] = (uint8_t)(scanner->pending_indent >> 8);
+  buffer[size++] = (uint8_t)(scanner->pending_column & 0xFF);
+  buffer[size++] = (uint8_t)(scanner->pending_column >> 8);
 
   // Serialize indent levels as 16-bit values (2 bytes each)
   // Skip the first element which is always 0
@@ -93,10 +102,18 @@ void tree_sitter_haml_external_scanner_deserialize(void *payload,
   Scanner *scanner = (Scanner *)payload;
   VEC_CLEAR(scanner->indents);
   VEC_PUSH(scanner->indents, 0);
+  scanner->pending_indent = 0;
+  scanner->pending_column = 0;
+  scanner->has_pending_indent = false;
 
-  // Deserialize 16-bit indent levels (2 bytes each)
-  if (length > 0) {
-    for (size_t i = 0; i + 1 < length; i += 2) {
+  // Deserialize pending indentation and 16-bit indent levels.
+  if (length >= 5) {
+    scanner->has_pending_indent = buffer[0];
+    scanner->pending_indent = (uint8_t)buffer[1] |
+                              ((uint16_t)(uint8_t)buffer[2] << 8);
+    scanner->pending_column = (uint8_t)buffer[3] |
+                              ((uint16_t)(uint8_t)buffer[4] << 8);
+    for (size_t i = 5; i + 1 < length; i += 2) {
       uint16_t indent = (uint8_t)buffer[i] | ((uint16_t)(uint8_t)buffer[i + 1] << 8);
       VEC_PUSH(scanner->indents, indent);
     }
@@ -111,21 +128,93 @@ void *tree_sitter_haml_external_scanner_create() {
   return scanner;
 }
 
+static bool resolve_pending_indent(Scanner *scanner, TSLexer *lexer,
+                                   const bool *valid_symbols) {
+  uint16_t current_indent = VEC_BACK(scanner->indents);
+  if (scanner->pending_indent < current_indent && valid_symbols[DEDENT]) {
+    VEC_POP(scanner->indents);
+    lexer->result_symbol = DEDENT;
+    return true;
+  }
+  if (scanner->pending_indent > current_indent && valid_symbols[INDENT]) {
+    VEC_PUSH(scanner->indents, scanner->pending_indent);
+    scanner->has_pending_indent = false;
+    lexer->result_symbol = INDENT;
+    return true;
+  }
+  if (scanner->pending_indent == current_indent) {
+    scanner->has_pending_indent = false;
+  }
+  return false;
+}
+
 bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
                                             const bool *valid_symbols) {
   Scanner *scanner = (Scanner *)payload;
 
-  // Handle CRLF (Windows) and bare CR (old Mac) as newline
-  if (lexer->lookahead == '\r') {
-    skip(lexer);
+  // Pending indentation only applies at the first non-whitespace character
+  // of its own line. Once lexing has moved past that column, drop it.
+  if (scanner->has_pending_indent &&
+      lexer->get_column(lexer) != scanner->pending_column) {
+    scanner->has_pending_indent = false;
   }
-  if (lexer->lookahead == '\n') {
-    if (valid_symbols[NEWLINE]) {
+  if (scanner->has_pending_indent &&
+      resolve_pending_indent(scanner, lexer, valid_symbols)) {
+    return true;
+  }
+
+  // Handle indentation when there was no external newline, such as at the
+  // start of a file or after a token that consumed its own newline.
+  if (!scanner->has_pending_indent && lexer->lookahead != 0 &&
+      lexer->lookahead != '\r' && lexer->lookahead != '\n' &&
+      lexer->get_column(lexer) == 0) {
+    uint16_t indent_length = 0;
+    while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
+      indent_length += lexer->lookahead == '\t' ? 8 : 1;
       skip(lexer);
-      lexer->result_symbol = NEWLINE;
-      return true;
     }
-    return false;
+    if (lexer->lookahead != 0 && lexer->lookahead != '\r' &&
+        lexer->lookahead != '\n') {
+      scanner->pending_indent = indent_length;
+      scanner->pending_column = lexer->get_column(lexer);
+      scanner->has_pending_indent = true;
+      if (resolve_pending_indent(scanner, lexer, valid_symbols)) {
+        return true;
+      }
+    }
+  }
+
+  // Consume indentation with the preceding newline so the next token starts
+  // at its first non-whitespace character.
+  if (lexer->lookahead == '\r' || lexer->lookahead == '\n') {
+    if (!valid_symbols[NEWLINE]) {
+      return false;
+    }
+
+    if (lexer->lookahead == '\r') {
+      skip(lexer);
+      if (lexer->lookahead != '\n') {
+        return false;
+      }
+    }
+    skip(lexer);
+    scanner->has_pending_indent = false;
+
+    uint16_t indent_length = 0;
+    while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
+      indent_length += lexer->lookahead == '\t' ? 8 : 1;
+      skip(lexer);
+    }
+
+    if (lexer->lookahead != 0 && lexer->lookahead != '\r' &&
+        lexer->lookahead != '\n') {
+      scanner->pending_indent = indent_length;
+      scanner->pending_column = lexer->get_column(lexer);
+      scanner->has_pending_indent = true;
+    }
+
+    lexer->result_symbol = NEWLINE;
+    return true;
   }
 
   // HTML attributes but in Ruby
@@ -177,42 +266,6 @@ bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
       return false;
     }
     return false;
-  }
-
-  if (lexer->lookahead && lexer->get_column(lexer) == 0) {
-    uint32_t indent_length = 0;
-
-    // Indent tokens are zero width
-    lexer->mark_end(lexer);
-
-    for (;;) {
-      if (lexer->lookahead == ' ') {
-        indent_length++;
-        skip(lexer);
-      } else if (lexer->lookahead == '\t') {
-        indent_length += 8;
-        skip(lexer);
-      } else {
-        break;
-      }
-    }
-
-    // Ignore blank lines for indentation
-    if (lexer->lookahead == '\r' || lexer->lookahead == '\n' || 
-        lexer->lookahead == 0) {
-      return false;
-    }
-
-    if (indent_length > VEC_BACK(scanner->indents) && valid_symbols[INDENT]) {
-      VEC_PUSH(scanner->indents, indent_length);
-      lexer->result_symbol = INDENT;
-      return true;
-    }
-    if (indent_length < VEC_BACK(scanner->indents) && valid_symbols[DEDENT]) {
-      VEC_POP(scanner->indents);
-      lexer->result_symbol = DEDENT;
-      return true;
-    }
   }
 
   return false;
