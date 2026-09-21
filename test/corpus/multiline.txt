@@ -6,11 +6,15 @@ Multiline pipe text
   First line |
   second line |
   third line |
+%p after
 %p= a | b
 
 --------------------------------------------------------------------------------
 
 (source_file
+  (tag
+    (tag_name)
+    (verbatim_string))
   (tag
     (tag_name)
     (verbatim_string))

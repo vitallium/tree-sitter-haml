@@ -104,7 +104,7 @@ Blank lines with different indentation
 
 %div
   %p Child
-    
+
   %span Another child
 
 --------------------------------------------------------------------------------

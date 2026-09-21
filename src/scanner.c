@@ -190,16 +190,15 @@ bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
     if (!valid_symbols[NEWLINE]) {
       return false;
     }
-    scanner->has_pending_indent = false;
 
     if (lexer->lookahead == '\r') {
       skip(lexer);
-      if (lexer->lookahead == '\n') {
-        skip(lexer);
+      if (lexer->lookahead != '\n') {
+        return false;
       }
-    } else {
-      skip(lexer);
     }
+    skip(lexer);
+    scanner->has_pending_indent = false;
 
     uint16_t indent_length = 0;
     while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {

@@ -53,13 +53,7 @@ mod tests {
 
     #[test]
     fn indented_tokens_start_after_whitespace() {
-        let mut parser = tree_sitter::Parser::new();
-        parser
-            .set_language(&super::LANGUAGE.into())
-            .expect("Error loading Haml parser");
-
-        let source = "%a\n  %b\n    %c\n      %d\n  %e\n    %f\n";
-        let tree = parser.parse(source, None).unwrap();
+        let tree = parse("%a\n  %b\n    %c\n      %d\n  %e\n    %f\n");
         assert!(!tree.root_node().has_error());
 
         let mut columns = Vec::new();
