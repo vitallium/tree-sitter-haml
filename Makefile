@@ -4,7 +4,7 @@ endif
 
 LANGUAGE_NAME := tree-sitter-haml
 HOMEPAGE_URL := https://github.com/vitallium/tree-sitter-haml
-VERSION := 0.1.1
+VERSION := 0.1.2
 
 # repository
 SRC_DIR := src
