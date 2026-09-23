@@ -27,8 +27,8 @@
   },
   "devDependencies": {
     "node-gyp": "12.2.0",
-    "tree-sitter-cli": "0.25.10",
-    "prebuildify": "6.0.1"
+    "prebuildify": "6.0.1",
+    "tree-sitter-cli": "0.27.0"
   },
   "files": [
     "grammar.js",

@@ -154,7 +154,8 @@ app/views/dashboard/merge_requests.html.haml
     (tag
       (id)
       (attributes
-        (ruby_attributes))
+        (ruby_attributes
+          (ruby_attribute_hash)))
       (ruby_block_output
         (ruby_code))
       (ruby_block_output

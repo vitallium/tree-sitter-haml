@@ -4,9 +4,28 @@
 const pipe_line = /[^\n]*[ \t]+\|[ \t]*\r?\n/;
 const pipe_line_no_newline = /[^\n]*[ \t]+\|[ \t]*/;
 
+const rubyAttributeHash = ($) =>
+  seq(
+    token.immediate("{"),
+    repeat(
+      choice(
+        $._ruby_attribute_content,
+        $._ruby_attribute_newline,
+        $.ruby_attribute_hash,
+      ),
+    ),
+    token.immediate("}"),
+  );
+
 module.exports = grammar({
   name: "haml",
-  externals: ($) => [$._newline, $._indent, $._dedent, $.ruby_attributes],
+  externals: ($) => [
+    $._newline,
+    $._indent,
+    $._dedent,
+    $._ruby_attribute_start,
+    $._ruby_attribute_newline,
+  ],
   rules: {
     source_file: ($) =>
       repeat(
@@ -74,6 +93,17 @@ module.exports = grammar({
       ),
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
+    ruby_attributes: ($) => seq($._ruby_attribute_start, rubyAttributeHash($)),
+    ruby_attribute_hash: rubyAttributeHash,
+    _ruby_attribute_content: () =>
+      token.immediate(
+        choice(
+          /[^{}"'\r\n\\]+/,
+          /"(\\(.|\r?\n)|[^"\\])*"/,
+          /'(\\(.|\r?\n)|[^'\\])*'/,
+          /\\(.|\r?\n)/,
+        ),
+      ),
     attributes: ($) => repeat1(choice($.html_attributes, $.ruby_attributes)),
     object_reference: ($) =>
       seq(

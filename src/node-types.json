@@ -158,6 +158,11 @@
     "fields": {}
   },
   {
+    "type": "id",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "inline_ruby_block",
     "named": true,
     "fields": {},
@@ -257,6 +262,36 @@
         },
         {
           "type": "ruby_interpolation",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ruby_attribute_hash",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ruby_attribute_hash",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "ruby_attributes",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "ruby_attribute_hash",
           "named": true
         }
       ]
@@ -906,10 +941,6 @@
   },
   {
     "type": "object_prefix",
-    "named": true
-  },
-  {
-    "type": "ruby_attributes",
     "named": true
   },
   {
