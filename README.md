@@ -6,11 +6,16 @@ This is a general tree-sitter parser grammar for [the HAML templating language](
 
 ### Building
 
-To build the grammar, run:
+Install the [Tree-sitter CLI](https://tree-sitter.github.io/tree-sitter/creating-parsers/1-getting-started.html#installation),
+and ensure Node.js and a C compiler are available. From the repository root, run:
 
 ```shell
-npm run build
+tree-sitter generate
+tree-sitter build .
 ```
+
+This generates the parser sources and compiles a native shared library. No npm
+scripts or Node.js bindings are needed.
 
 ### Registering the grammar
 
