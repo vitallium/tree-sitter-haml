@@ -201,8 +201,7 @@ Attribute hashes that are stretched over multiple lines
   (tag
     (tag_name)
     (attributes
-      (ruby_attributes
-        (ruby_attribute_hash)))))
+      (ruby_attributes))))
 
 ================================================================================
 HTML-like attributes that are stretched over multiple lines

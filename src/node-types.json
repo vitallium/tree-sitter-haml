@@ -268,34 +268,9 @@
     }
   },
   {
-    "type": "ruby_attribute_hash",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "ruby_attribute_hash",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "ruby_attributes",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": false,
-      "types": [
-        {
-          "type": "ruby_attribute_hash",
-          "named": true
-        }
-      ]
-    }
+    "fields": {}
   },
   {
     "type": "ruby_block_output",

@@ -53,9 +53,7 @@ Tag with the child Ruby hashes
     (class
       (class_name))
     (attributes
-      (ruby_attributes
-        (ruby_attribute_hash
-          (ruby_attribute_hash))))))
+      (ruby_attributes))))
 
 ================================================================================
 Tag with the child Ruby hashes v2

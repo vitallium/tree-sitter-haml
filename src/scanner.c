@@ -11,7 +11,7 @@ enum TokenType {
   INDENT,
   DEDENT,
   RUBY_ATTRIBUTE_START,
-  RUBY_ATTRIBUTE_NEWLINE,
+  RUBY_ATTRIBUTE_CONTENT,
 };
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
@@ -65,7 +65,6 @@ typedef struct {
   uint16_t pending_indent;
   uint16_t pending_column;
   bool has_pending_indent;
-  uint32_t ruby_attribute_newlines;
 } Scanner;
 
 static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
@@ -82,10 +81,6 @@ unsigned tree_sitter_haml_external_scanner_serialize(void *payload,
   buffer[size++] = (uint8_t)(scanner->pending_indent >> 8);
   buffer[size++] = (uint8_t)(scanner->pending_column & 0xFF);
   buffer[size++] = (uint8_t)(scanner->pending_column >> 8);
-  buffer[size++] = (uint8_t)(scanner->ruby_attribute_newlines & 0xFF);
-  buffer[size++] = (uint8_t)((scanner->ruby_attribute_newlines >> 8) & 0xFF);
-  buffer[size++] = (uint8_t)((scanner->ruby_attribute_newlines >> 16) & 0xFF);
-  buffer[size++] = (uint8_t)(scanner->ruby_attribute_newlines >> 24);
 
   // Serialize indent levels as 16-bit values (2 bytes each)
   // Skip the first element which is always 0
@@ -110,7 +105,6 @@ void tree_sitter_haml_external_scanner_deserialize(void *payload,
   scanner->pending_indent = 0;
   scanner->pending_column = 0;
   scanner->has_pending_indent = false;
-  scanner->ruby_attribute_newlines = 0;
 
   // Deserialize pending indentation and 16-bit indent levels.
   if (length >= 5) {
@@ -119,15 +113,7 @@ void tree_sitter_haml_external_scanner_deserialize(void *payload,
                               ((uint16_t)(uint8_t)buffer[2] << 8);
     scanner->pending_column = (uint8_t)buffer[3] |
                               ((uint16_t)(uint8_t)buffer[4] << 8);
-    size_t offset = 5;
-    if (length >= 9) {
-      scanner->ruby_attribute_newlines =
-          (uint8_t)buffer[5] | ((uint32_t)(uint8_t)buffer[6] << 8) |
-          ((uint32_t)(uint8_t)buffer[7] << 16) |
-          ((uint32_t)(uint8_t)buffer[8] << 24);
-      offset = 9;
-    }
-    for (size_t i = offset; i + 1 < length; i += 2) {
+    for (size_t i = 5; i + 1 < length; i += 2) {
       uint16_t indent = (uint8_t)buffer[i] | ((uint16_t)(uint8_t)buffer[i + 1] << 8);
       VEC_PUSH(scanner->indents, indent);
     }
@@ -162,18 +148,29 @@ static bool resolve_pending_indent(Scanner *scanner, TSLexer *lexer,
   return false;
 }
 
-static bool scan_ruby_attribute_start(Scanner *scanner, TSLexer *lexer) {
-  if (lexer->lookahead != '{') {
-    return false;
+static bool scan_ruby_attribute(TSLexer *lexer, bool content) {
+  if (!content) {
+    if (lexer->lookahead != '{') {
+      return false;
+    }
+    // Validate without consuming the opening brace, preserving local recovery.
+    lexer->mark_end(lexer);
+    advance(lexer);
   }
-  lexer->mark_end(lexer);
 
-  uint16_t brace_depth = 0;
-  uint32_t newline_count = 0;
+  uint32_t brace_depth = 1;
+  bool consumed_content = false;
   bool in_string = false;
   char string_delimiter = 0;
 
   while (lexer->lookahead != 0) {
+    if (!in_string && lexer->lookahead == '}' && brace_depth == 1) {
+      if (content) {
+        lexer->mark_end(lexer);
+      }
+      return !content || consumed_content;
+    }
+    consumed_content = true;
     if (lexer->lookahead == '\\') {
       advance(lexer);
       if (lexer->lookahead == '\r') {
@@ -184,19 +181,6 @@ static bool scan_ruby_attribute_start(Scanner *scanner, TSLexer *lexer) {
       } else if (lexer->lookahead != 0) {
         advance(lexer);
       }
-      continue;
-    }
-    if (lexer->lookahead == '\r' || lexer->lookahead == '\n') {
-      if (!in_string) {
-        newline_count++;
-      }
-      if (lexer->lookahead == '\r') {
-        advance(lexer);
-        if (lexer->lookahead != '\n') {
-          continue;
-        }
-      }
-      advance(lexer);
       continue;
     }
     if (lexer->lookahead == '"' || lexer->lookahead == '\'') {
@@ -210,37 +194,24 @@ static bool scan_ruby_attribute_start(Scanner *scanner, TSLexer *lexer) {
       brace_depth++;
     } else if (!in_string && lexer->lookahead == '}') {
       brace_depth--;
-      if (brace_depth == 0) {
-        scanner->ruby_attribute_newlines = newline_count;
-        return true;
-      }
     }
     advance(lexer);
   }
   return false;
 }
 
-static bool scan_ruby_attribute_newline(Scanner *scanner, TSLexer *lexer) {
-  if (scanner->ruby_attribute_newlines == 0) {
-    return false;
-  }
-  if (lexer->lookahead == '\r') {
-    advance(lexer);
-    if (lexer->lookahead != '\n') {
-      return false;
-    }
-  }
-  advance(lexer);
-  while (lexer->lookahead == ' ' || lexer->lookahead == '\t') {
-    advance(lexer);
-  }
-  scanner->ruby_attribute_newlines--;
-  return true;
-}
-
 bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
                                             const bool *valid_symbols) {
   Scanner *scanner = (Scanner *)payload;
+
+  // Attribute content includes its own newlines and must bypass HAML indentation.
+  if (valid_symbols[RUBY_ATTRIBUTE_CONTENT] && !valid_symbols[NEWLINE]) {
+    if (scan_ruby_attribute(lexer, true)) {
+      lexer->result_symbol = RUBY_ATTRIBUTE_CONTENT;
+      return true;
+    }
+    return false;
+  }
 
   // Pending indentation only applies at the first non-whitespace character
   // of its own line. Once lexing has moved past that column, drop it.
@@ -274,21 +245,12 @@ bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
     }
   }
 
-  // Validate the outer hash once; the stored count keeps each newline scan O(1).
+  // Validation and content scanning each traverse the hash once.
   if (valid_symbols[RUBY_ATTRIBUTE_START] &&
-      !valid_symbols[RUBY_ATTRIBUTE_NEWLINE] &&
-      scan_ruby_attribute_start(scanner, lexer)) {
+      !valid_symbols[RUBY_ATTRIBUTE_CONTENT] &&
+      scan_ruby_attribute(lexer, false)) {
     lexer->result_symbol = RUBY_ATTRIBUTE_START;
     return true;
-  }
-
-  if (valid_symbols[RUBY_ATTRIBUTE_NEWLINE] && !valid_symbols[NEWLINE] &&
-      (lexer->lookahead == '\r' || lexer->lookahead == '\n')) {
-    if (scan_ruby_attribute_newline(scanner, lexer)) {
-      lexer->result_symbol = RUBY_ATTRIBUTE_NEWLINE;
-      return true;
-    }
-    return false;
   }
 
   // Consume indentation with the preceding newline so the next token starts

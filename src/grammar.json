@@ -407,50 +407,6 @@
           "name": "_ruby_attribute_start"
         },
         {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "STRING",
-                "value": "{"
-              }
-            },
-            {
-              "type": "REPEAT",
-              "content": {
-                "type": "CHOICE",
-                "members": [
-                  {
-                    "type": "SYMBOL",
-                    "name": "_ruby_attribute_content"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "_ruby_attribute_newline"
-                  },
-                  {
-                    "type": "SYMBOL",
-                    "name": "ruby_attribute_hash"
-                  }
-                ]
-              }
-            },
-            {
-              "type": "IMMEDIATE_TOKEN",
-              "content": {
-                "type": "STRING",
-                "value": "}"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    "ruby_attribute_hash": {
-      "type": "SEQ",
-      "members": [
-        {
           "type": "IMMEDIATE_TOKEN",
           "content": {
             "type": "STRING",
@@ -458,24 +414,16 @@
           }
         },
         {
-          "type": "REPEAT",
-          "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "_ruby_attribute_content"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "_ruby_attribute_newline"
-              },
-              {
-                "type": "SYMBOL",
-                "name": "ruby_attribute_hash"
-              }
-            ]
-          }
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_ruby_attribute_content"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
         },
         {
           "type": "IMMEDIATE_TOKEN",
@@ -485,30 +433,6 @@
           }
         }
       ]
-    },
-    "_ruby_attribute_content": {
-      "type": "IMMEDIATE_TOKEN",
-      "content": {
-        "type": "CHOICE",
-        "members": [
-          {
-            "type": "PATTERN",
-            "value": "[^{}\"'\\r\\n\\\\]+"
-          },
-          {
-            "type": "PATTERN",
-            "value": "\"(\\\\(.|\\r?\\n)|[^\"\\\\])*\""
-          },
-          {
-            "type": "PATTERN",
-            "value": "'(\\\\(.|\\r?\\n)|[^'\\\\])*'"
-          },
-          {
-            "type": "PATTERN",
-            "value": "\\\\(.|\\r?\\n)"
-          }
-        ]
-      }
     },
     "attributes": {
       "type": "REPEAT1",
@@ -1467,7 +1391,7 @@
     },
     {
       "type": "SYMBOL",
-      "name": "_ruby_attribute_newline"
+      "name": "_ruby_attribute_content"
     }
   ],
   "inline": [],
