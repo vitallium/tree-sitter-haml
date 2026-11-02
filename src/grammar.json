@@ -399,6 +399,41 @@
         }
       ]
     },
+    "ruby_attributes": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "_ruby_attribute_start"
+        },
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "{"
+          }
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_ruby_attribute_content"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "IMMEDIATE_TOKEN",
+          "content": {
+            "type": "STRING",
+            "value": "}"
+          }
+        }
+      ]
+    },
     "attributes": {
       "type": "REPEAT1",
       "content": {
@@ -1352,7 +1387,11 @@
     },
     {
       "type": "SYMBOL",
-      "name": "ruby_attributes"
+      "name": "_ruby_attribute_start"
+    },
+    {
+      "type": "SYMBOL",
+      "name": "_ruby_attribute_content"
     }
   ],
   "inline": [],

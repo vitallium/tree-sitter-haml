@@ -6,7 +6,13 @@ const pipe_line_no_newline = /[^\n]*[ \t]+\|[ \t]*/;
 
 module.exports = grammar({
   name: "haml",
-  externals: ($) => [$._newline, $._indent, $._dedent, $.ruby_attributes],
+  externals: ($) => [
+    $._newline,
+    $._indent,
+    $._dedent,
+    $._ruby_attribute_start,
+    $._ruby_attribute_content,
+  ],
   rules: {
     source_file: ($) =>
       repeat(
@@ -74,6 +80,14 @@ module.exports = grammar({
       ),
     html_attributes: ($) =>
       seq("(", repeat(seq($.attribute, optional(" "))), ")"),
+    // Nested Ruby syntax belongs to the injected Ruby grammar.
+    ruby_attributes: ($) =>
+      seq(
+        $._ruby_attribute_start,
+        token.immediate("{"),
+        optional($._ruby_attribute_content),
+        token.immediate("}"),
+      ),
     attributes: ($) => repeat1(choice($.html_attributes, $.ruby_attributes)),
     object_reference: ($) =>
       seq(

@@ -10,8 +10,8 @@ enum TokenType {
   NEWLINE,
   INDENT,
   DEDENT,
-
-  RUBY_ATTRIBUTES,
+  RUBY_ATTRIBUTE_START,
+  RUBY_ATTRIBUTE_CONTENT,
 };
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
 
@@ -148,9 +148,70 @@ static bool resolve_pending_indent(Scanner *scanner, TSLexer *lexer,
   return false;
 }
 
+static bool scan_ruby_attribute(TSLexer *lexer, bool content) {
+  if (!content) {
+    if (lexer->lookahead != '{') {
+      return false;
+    }
+    // Validate without consuming the opening brace, preserving local recovery.
+    lexer->mark_end(lexer);
+    advance(lexer);
+  }
+
+  uint32_t brace_depth = 1;
+  bool consumed_content = false;
+  bool in_string = false;
+  char string_delimiter = 0;
+
+  while (lexer->lookahead != 0) {
+    if (!in_string && lexer->lookahead == '}' && brace_depth == 1) {
+      if (content) {
+        lexer->mark_end(lexer);
+      }
+      return !content || consumed_content;
+    }
+    consumed_content = true;
+    if (lexer->lookahead == '\\') {
+      advance(lexer);
+      if (lexer->lookahead == '\r') {
+        advance(lexer);
+        if (lexer->lookahead == '\n') {
+          advance(lexer);
+        }
+      } else if (lexer->lookahead != 0) {
+        advance(lexer);
+      }
+      continue;
+    }
+    if (lexer->lookahead == '"' || lexer->lookahead == '\'') {
+      if (!in_string) {
+        in_string = true;
+        string_delimiter = lexer->lookahead;
+      } else if (lexer->lookahead == string_delimiter) {
+        in_string = false;
+      }
+    } else if (!in_string && lexer->lookahead == '{') {
+      brace_depth++;
+    } else if (!in_string && lexer->lookahead == '}') {
+      brace_depth--;
+    }
+    advance(lexer);
+  }
+  return false;
+}
+
 bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
                                             const bool *valid_symbols) {
   Scanner *scanner = (Scanner *)payload;
+
+  // Attribute content includes its own newlines and must bypass HAML indentation.
+  if (valid_symbols[RUBY_ATTRIBUTE_CONTENT] && !valid_symbols[NEWLINE]) {
+    if (scan_ruby_attribute(lexer, true)) {
+      lexer->result_symbol = RUBY_ATTRIBUTE_CONTENT;
+      return true;
+    }
+    return false;
+  }
 
   // Pending indentation only applies at the first non-whitespace character
   // of its own line. Once lexing has moved past that column, drop it.
@@ -184,6 +245,14 @@ bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
     }
   }
 
+  // Validation and content scanning each traverse the hash once.
+  if (valid_symbols[RUBY_ATTRIBUTE_START] &&
+      !valid_symbols[RUBY_ATTRIBUTE_CONTENT] &&
+      scan_ruby_attribute(lexer, false)) {
+    lexer->result_symbol = RUBY_ATTRIBUTE_START;
+    return true;
+  }
+
   // Consume indentation with the preceding newline so the next token starts
   // at its first non-whitespace character.
   if (lexer->lookahead == '\r' || lexer->lookahead == '\n') {
@@ -215,57 +284,6 @@ bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
 
     lexer->result_symbol = NEWLINE;
     return true;
-  }
-
-  // HTML attributes but in Ruby
-  if (lexer->lookahead == '{') {
-    if (valid_symbols[RUBY_ATTRIBUTES]) {
-      lexer->result_symbol = RUBY_ATTRIBUTES;
-
-      uint16_t brace_depth = 0;
-      bool in_string = false;
-      char string_delimiter = 0;
-
-      while (lexer->lookahead != 0) {
-        switch (lexer->lookahead) {
-        case '{':
-          if (!in_string)
-            brace_depth++;
-          advance(lexer);
-          break;
-        case '}':
-          if (!in_string) {
-            brace_depth--;
-            if (brace_depth == 0) {
-              advance(lexer);
-              return true;
-            }
-          }
-          advance(lexer);
-          break;
-        case '"':
-        case '\'':
-          if (!in_string) {
-            in_string = true;
-            string_delimiter = lexer->lookahead;
-          } else if (lexer->lookahead == string_delimiter) {
-            in_string = false;
-          }
-          advance(lexer);
-          break;
-        case '\\':
-          advance(lexer);
-          if (lexer->lookahead != 0)
-            advance(lexer);
-          break;
-        default:
-          advance(lexer);
-          break;
-        }
-      }
-      return false;
-    }
-    return false;
   }
 
   return false;

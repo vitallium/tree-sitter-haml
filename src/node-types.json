@@ -158,6 +158,11 @@
     "fields": {}
   },
   {
+    "type": "id",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "inline_ruby_block",
     "named": true,
     "fields": {},
@@ -261,6 +266,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "ruby_attributes",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "ruby_block_output",
@@ -906,10 +916,6 @@
   },
   {
     "type": "object_prefix",
-    "named": true
-  },
-  {
-    "type": "ruby_attributes",
     "named": true
   },
   {
