@@ -69,7 +69,7 @@ test("leaves Ruby literal and comment braces to the injected grammar", () => {
     );
     assert.deepStrictEqual(
       injectionQuery.captures(tree.rootNode)
-        .filter(({ name }) => name === "content")
+        .filter(({ name }) => name === "injection.content")
         .map(({ node }) => [node.startIndex, node.endIndex]),
       [[4, end]],
       source,
