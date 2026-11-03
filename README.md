@@ -36,11 +36,22 @@ Once registered, commands like `tree-sitter parse` and `tree-sitter highlight` w
 
 ### Testing
 
-To test the grammar, run:
+Install the development dependencies and run both the grammar corpus and Node.js binding tests:
 
 ```shell
-npm run test
+npm install
+npm test
 ```
+
+The test command regenerates the parser and rebuilds the Node.js binding first.
+
+To check the Make and CMake installations with a compiled C consumer, run:
+
+```shell
+sh test/pkg-config.sh
+```
+
+This check also needs Make, CMake, and pkg-config.
 
 ## Contributing
 

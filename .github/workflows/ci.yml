@@ -9,6 +9,9 @@ on:
       - test/**
       - bindings/**
       - binding.gyp
+      - Makefile
+      - CMakeLists.txt
+      - package.json
   pull_request:
     paths:
       - grammar.js
@@ -16,6 +19,8 @@ on:
       - test/**
       - bindings/**
       - binding.gyp
+      - Makefile
+      - CMakeLists.txt
       - package.json
 
 concurrency:
@@ -44,3 +49,6 @@ jobs:
           test-node: true
           test-python: true
           test-go: true
+      - name: Test C package installation
+        if: runner.os != 'Windows'
+        run: sh test/pkg-config.sh

@@ -41,15 +41,15 @@ set_target_properties(tree-sitter-haml
                       SOVERSION "${TREE_SITTER_ABI_VERSION}.${PROJECT_VERSION_MAJOR}"
                       DEFINE_SYMBOL "")
 
+include(GNUInstallDirs)
+
 configure_file(bindings/c/tree-sitter-haml.pc.in
                "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter-haml.pc" @ONLY)
-
-include(GNUInstallDirs)
 
 install(FILES bindings/c/tree-sitter-haml.h
         DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/tree_sitter")
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/tree-sitter-haml.pc"
-        DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig")
+        DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 install(TARGETS tree-sitter-haml
         LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 
