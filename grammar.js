@@ -1,7 +1,7 @@
 /// <reference types="tree-sitter-cli/dsl" />
 // @ts-check
 
-const pipe_line = /[^\n]*[ \t]+\|[ \t]*\r?\n/;
+const pipe_line = /[^ \t\r\n][^\n]*[ \t]+\|[ \t]*\r?\n/;
 const pipe_line_no_newline = /[^\n]*[ \t]+\|[ \t]*/;
 
 module.exports = grammar({
@@ -28,6 +28,7 @@ module.exports = grammar({
           $.ruby_interpolation,
           $.filter,
           $.escaped_text,
+          $.verbatim_string,
         ),
       ),
     doctype: ($) =>
@@ -140,7 +141,8 @@ module.exports = grammar({
           repeat(
             choice(
               $.ruby_interpolation,
-              alias($._html_identifier, $.attribute_value),
+              alias(token.immediate(prec(-1, /([^'\\#\r\n]|\\[^\r\n]|#[^{'\\\r\n])+/)), $.attribute_value),
+              alias("#", $.attribute_value),
             ),
           ),
           "'",
@@ -150,7 +152,8 @@ module.exports = grammar({
           repeat(
             choice(
               $.ruby_interpolation,
-              alias($._html_identifier, $.attribute_value),
+              alias(token.immediate(prec(-1, /([^"\\#\r\n]|\\[^\r\n]|#[^{"\\\r\n])+/)), $.attribute_value),
+              alias("#", $.attribute_value),
             ),
           ),
           '"',
@@ -160,8 +163,8 @@ module.exports = grammar({
     verbatim_string: ($) => token(
       prec(-1,
         choice(
-          seq(pipe_line, repeat1(pipe_line)),
-          /[^\n]+/,
+          seq(pipe_line, repeat1(seq(/[ \t]*/, pipe_line))),
+          /[^ \t\r\n][^\n]*/,
         ),
       ),
     ),
@@ -235,8 +238,8 @@ module.exports = grammar({
     ruby_class_variable: () => seq("@@", /[a-zA-Z0-9_]+/),
     ruby_instance_variable: () => seq("@", /[_a-zA-Z0-9]+/),
     ruby_global_variable: () => seq("$", /[a-zA-Z0-9_]+/),
-    ruby_constant: () => /[A-Z][a-zA-Z0-9_]+/,
-    ruby_local_variable: () => /[a-z_][a-zA-Z0-9_]+/,
+    ruby_constant: () => /[A-Z][a-zA-Z0-9_]*/,
+    ruby_local_variable: () => /[a-z_][a-zA-Z0-9_]*/,
     ruby_value_ref: ($) => choice(
       $.ruby_local_variable,
       $.ruby_class_variable,
@@ -244,7 +247,6 @@ module.exports = grammar({
       $.ruby_global_variable,
       $.ruby_constant
     ),
-    _html_identifier: () => /[-:\w/.]+/,
     filter: ($) =>
       seq(
         ":",

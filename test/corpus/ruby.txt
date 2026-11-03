@@ -447,3 +447,61 @@ Inline Ruby output uses a distinct node
     (tag_name)
     (inline_ruby_block
       (ruby_code))))
+
+================================================================================
+Single-letter Ruby names in attributes and object references
+================================================================================
+
+%p[x](title=x value=X)
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (object_reference (ruby_local_variable))
+    (attributes
+      (html_attributes
+        (attribute
+          (attribute_name)
+          (ruby_value_ref (ruby_local_variable)))
+        (attribute
+          (attribute_name)
+          (ruby_value_ref (ruby_constant)))))))
+
+================================================================================
+Braces inside Ruby regular expressions and percent literals
+================================================================================
+
+%p{title: /}/} Hello
+%p{title: %q(})} Hello
+%p{title: %Q{nested {braces}}} Hello
+%p{title: /[}/]/} Hello
+%p{title: total / count, other: "}"} Hello
+%p{title: total % count} Hello
+%p{title: %r[}]} Hello
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag (tag_name) (attributes (ruby_attributes)) (verbatim_string))
+  (tag (tag_name) (attributes (ruby_attributes)) (verbatim_string))
+  (tag (tag_name) (attributes (ruby_attributes)) (verbatim_string))
+  (tag (tag_name) (attributes (ruby_attributes)) (verbatim_string))
+  (tag (tag_name) (attributes (ruby_attributes)) (verbatim_string))
+  (tag (tag_name) (attributes (ruby_attributes)) (verbatim_string))
+  (tag (tag_name) (attributes (ruby_attributes)) (verbatim_string)))
+
+================================================================================
+Braces inside Ruby hash comments
+================================================================================
+
+%p{
+  # Ignore this }
+  title: "Hi"
+} Hello
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag (tag_name) (attributes (ruby_attributes)) (verbatim_string)))

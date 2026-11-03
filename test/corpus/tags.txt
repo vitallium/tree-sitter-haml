@@ -389,3 +389,48 @@ Tag with object reference and attributes
       (ruby_instance_variable))
     (attributes
       (ruby_attributes))))
+
+================================================================================
+Plain text at the root and between tags
+================================================================================
+
+Hello world
+%p Hello
+Goodbye
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (verbatim_string)
+  (tag
+    (tag_name)
+    (verbatim_string))
+  (verbatim_string))
+
+================================================================================
+Quoted attributes with punctuation, spaces and interpolation
+================================================================================
+
+%p(title="Hello world!" href="/search?q=haml&lang=en" data-note='It\'s #{name}!')
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (tag
+    (tag_name)
+    (attributes
+      (html_attributes
+        (attribute
+          (attribute_name)
+          (quoted_attribute_value
+            (attribute_value)))
+        (attribute
+          (attribute_name)
+          (quoted_attribute_value
+            (attribute_value)))
+        (attribute
+          (attribute_name)
+          (quoted_attribute_value
+            (attribute_value)
+            (ruby_interpolation (ruby_expression))
+            (attribute_value)))))))
