@@ -99,3 +99,30 @@ test("recovers from an unterminated Ruby attribute hash", () => {
     );
   }
 });
+
+for (const [source, expected] of [
+  ["%p", "(source_file (tag (tag_name)))"],
+  ["%a\n  %b", "(source_file (tag (tag_name) (tag (tag_name))))"],
+  ["\\%hello", "(source_file (escaped_text))"],
+  ["%a\n  -# comment", "(source_file (tag (tag_name) (comment)))"],
+]) {
+  test(`parses a final line without a newline: ${JSON.stringify(source)}`, () => {
+    const parser = new Parser();
+    parser.setLanguage(require("."));
+    const tree = parser.parse(source);
+    assert.equal(tree.rootNode.toString(), expected);
+    assert.equal(tree.rootNode.hasError, false);
+
+    tree.edit({
+      startIndex: source.length,
+      oldEndIndex: source.length,
+      newEndIndex: source.length + 1,
+      startPosition: tree.rootNode.endPosition,
+      oldEndPosition: tree.rootNode.endPosition,
+      newEndPosition: { row: tree.rootNode.endPosition.row + 1, column: 0 },
+    });
+    const edited = parser.parse(`${source}\n`, tree);
+    assert.equal(edited.rootNode.toString(), expected);
+    assert.equal(edited.rootNode.hasError, false);
+  });
+}

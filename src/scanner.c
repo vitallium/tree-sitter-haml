@@ -65,6 +65,7 @@ typedef struct {
   uint16_t pending_indent;
   uint16_t pending_column;
   bool has_pending_indent;
+  bool eof_newline_emitted;
 } Scanner;
 
 static inline void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
@@ -76,7 +77,7 @@ unsigned tree_sitter_haml_external_scanner_serialize(void *payload,
   Scanner *scanner = (Scanner *)payload;
   size_t size = 0;
 
-  buffer[size++] = scanner->has_pending_indent;
+  buffer[size++] = scanner->has_pending_indent | (scanner->eof_newline_emitted << 1);
   buffer[size++] = (uint8_t)(scanner->pending_indent & 0xFF);
   buffer[size++] = (uint8_t)(scanner->pending_indent >> 8);
   buffer[size++] = (uint8_t)(scanner->pending_column & 0xFF);
@@ -105,10 +106,12 @@ void tree_sitter_haml_external_scanner_deserialize(void *payload,
   scanner->pending_indent = 0;
   scanner->pending_column = 0;
   scanner->has_pending_indent = false;
+  scanner->eof_newline_emitted = false;
 
   // Deserialize pending indentation and 16-bit indent levels.
   if (length >= 5) {
-    scanner->has_pending_indent = buffer[0];
+    scanner->has_pending_indent = buffer[0] & 1;
+    scanner->eof_newline_emitted = buffer[0] & 2;
     scanner->pending_indent = (uint8_t)buffer[1] |
                               ((uint16_t)(uint8_t)buffer[2] << 8);
     scanner->pending_column = (uint8_t)buffer[3] |
@@ -148,6 +151,33 @@ static bool resolve_pending_indent(Scanner *scanner, TSLexer *lexer,
   return false;
 }
 
+static bool scan_literal(TSLexer *lexer, int32_t opening, int32_t closing,
+                         bool regex) {
+  uint32_t depth = 1;
+  bool in_character_class = false;
+  advance(lexer);
+  while (!lexer->eof(lexer)) {
+    int32_t character = lexer->lookahead;
+    advance(lexer);
+    if (character == '\\') {
+      if (!lexer->eof(lexer))
+        advance(lexer);
+      continue;
+    }
+    if (regex && character == '[')
+      in_character_class = true;
+    else if (regex && in_character_class && character == ']')
+      in_character_class = false;
+    else if (!in_character_class) {
+      if (character == closing && --depth == 0)
+        return true;
+      if (opening != closing && character == opening)
+        depth++;
+    }
+  }
+  return false;
+}
+
 static bool scan_ruby_attribute(TSLexer *lexer, bool content) {
   if (!content) {
     if (lexer->lookahead != '{') {
@@ -160,42 +190,94 @@ static bool scan_ruby_attribute(TSLexer *lexer, bool content) {
 
   uint32_t brace_depth = 1;
   bool consumed_content = false;
-  bool in_string = false;
-  char string_delimiter = 0;
+  // shortcut: literal starts use punctuation; add Ruby keyword/command context when needed.
+  bool expects_value = true;
 
-  while (lexer->lookahead != 0) {
-    if (!in_string && lexer->lookahead == '}' && brace_depth == 1) {
+  while (!lexer->eof(lexer)) {
+    int32_t character = lexer->lookahead;
+    if (character == '}' && brace_depth == 1) {
       if (content) {
         lexer->mark_end(lexer);
       }
       return !content || consumed_content;
     }
     consumed_content = true;
-    if (lexer->lookahead == '\\') {
+    switch (character) {
+    case '{':
+      brace_depth++;
+      expects_value = true;
       advance(lexer);
-      if (lexer->lookahead == '\r') {
+      break;
+    case '}':
+      brace_depth--;
+      expects_value = false;
+      advance(lexer);
+      break;
+    case '"':
+    case '\'':
+    case '`':
+      if (!scan_literal(lexer, character, character, false))
+        return false;
+      expects_value = false;
+      break;
+    case '/':
+      if (expects_value) {
+        if (!scan_literal(lexer, '/', '/', true))
+          return false;
+        expects_value = false;
+      } else {
         advance(lexer);
-        if (lexer->lookahead == '\n') {
+        expects_value = true;
+      }
+      break;
+    case '%':
+      advance(lexer);
+      if (expects_value) {
+        bool regex = lexer->lookahead == 'r';
+        switch (lexer->lookahead) {
+        case 'q': case 'Q': case 'w': case 'W':
+        case 'i': case 'I': case 'x': case 'r': case 's':
           advance(lexer);
         }
-      } else if (lexer->lookahead != 0) {
+        int32_t opening = lexer->lookahead;
+        int32_t closing = opening;
+        switch (opening) {
+        case '(': closing = ')'; break;
+        case '[': closing = ']'; break;
+        case '{': closing = '}'; break;
+        case '<': closing = '>'; break;
+        }
+        if (!scan_literal(lexer, opening, closing, regex))
+          return false;
+        expects_value = false;
+      } else {
+        expects_value = true;
+      }
+      break;
+    case '#':
+      while (!lexer->eof(lexer) && lexer->lookahead != '\n')
         advance(lexer);
-      }
-      continue;
+      break;
+    case '\\':
+      advance(lexer);
+      if (!lexer->eof(lexer))
+        advance(lexer);
+      break;
+    case ' ': case '\t': case '\r': case '\n':
+      advance(lexer);
+      break;
+    default:
+      expects_value = character == ':' || character == ',' ||
+                      character == '=' || character == '>' ||
+                      character == '(' || character == '[' ||
+                      character == '!' || character == '?' ||
+                      character == '+' || character == '-' ||
+                      character == '*' || character == '&' ||
+                      character == '|' || character == '~' ||
+                      character == '^' || character == ';';
+      advance(lexer);
+      break;
     }
-    if (lexer->lookahead == '"' || lexer->lookahead == '\'') {
-      if (!in_string) {
-        in_string = true;
-        string_delimiter = lexer->lookahead;
-      } else if (lexer->lookahead == string_delimiter) {
-        in_string = false;
-      }
-    } else if (!in_string && lexer->lookahead == '{') {
-      brace_depth++;
-    } else if (!in_string && lexer->lookahead == '}') {
-      brace_depth--;
-    }
-    advance(lexer);
   }
   return false;
 }
@@ -212,6 +294,22 @@ bool tree_sitter_haml_external_scanner_scan(void *payload, TSLexer *lexer,
     }
     return false;
   }
+
+  if (lexer->eof(lexer)) {
+    scanner->has_pending_indent = false;
+    if (valid_symbols[NEWLINE] && !scanner->eof_newline_emitted) {
+      scanner->eof_newline_emitted = true;
+      lexer->result_symbol = NEWLINE;
+      return true;
+    }
+    if (valid_symbols[DEDENT] && scanner->indents.len > 1) {
+      VEC_POP(scanner->indents);
+      lexer->result_symbol = DEDENT;
+      return true;
+    }
+    return false;
+  }
+  scanner->eof_newline_emitted = false;
 
   // Pending indentation only applies at the first non-whitespace character
   // of its own line. Once lexing has moved past that column, drop it.

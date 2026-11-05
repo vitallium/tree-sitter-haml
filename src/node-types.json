@@ -695,6 +695,10 @@
         {
           "type": "tag",
           "named": true
+        },
+        {
+          "type": "verbatim_string",
+          "named": true
         }
       ]
     }
